@@ -18,7 +18,7 @@ int main(int argc, char* argv[]) {
         return 10;
     }
     while (start != NULL) {
-        printf("%c\n", start->value);
+        print_debug(start);
         start = start->next;
     }
     printf("FINISHED\n");
