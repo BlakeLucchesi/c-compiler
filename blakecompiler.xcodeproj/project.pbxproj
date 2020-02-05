@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		5D80678323EA89660041EA5E /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 5D80678223EA89660041EA5E /* main.c */; };
+		5D80678E23EA89990041EA5E /* lexer.c in Sources */ = {isa = PBXBuildFile; fileRef = 5D80678923EA89990041EA5E /* lexer.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,6 +26,10 @@
 /* Begin PBXFileReference section */
 		5D80677F23EA89660041EA5E /* blakecompiler */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = blakecompiler; sourceTree = BUILT_PRODUCTS_DIR; };
 		5D80678223EA89660041EA5E /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
+		5D80678923EA89990041EA5E /* lexer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = lexer.c; sourceTree = "<group>"; };
+		5D80678C23EA89990041EA5E /* return2.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = return2.c; sourceTree = "<group>"; };
+		5D80678D23EA89990041EA5E /* lexer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lexer.h; sourceTree = "<group>"; };
+		5DB2489523EB637100551FD7 /* stage0.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = stage0.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,9 +62,21 @@
 		5D80678123EA89660041EA5E /* blakecompiler */ = {
 			isa = PBXGroup;
 			children = (
+				5DB2489323EB635800551FD7 /* Test Inputs */,
+				5D80678923EA89990041EA5E /* lexer.c */,
+				5D80678D23EA89990041EA5E /* lexer.h */,
+				5D80678C23EA89990041EA5E /* return2.c */,
 				5D80678223EA89660041EA5E /* main.c */,
 			);
 			path = blakecompiler;
+			sourceTree = "<group>";
+		};
+		5DB2489323EB635800551FD7 /* Test Inputs */ = {
+			isa = PBXGroup;
+			children = (
+				5DB2489523EB637100551FD7 /* stage0.c */,
+			);
+			path = "Test Inputs";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -119,6 +136,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5D80678E23EA89990041EA5E /* lexer.c in Sources */,
 				5D80678323EA89660041EA5E /* main.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
