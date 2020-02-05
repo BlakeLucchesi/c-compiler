@@ -10,10 +10,8 @@ int main(int argc, char* argv[]) {
         return -1;
     }
     printf("compiling %s\n", argv[1]);
-
    
     token *start = lex(argv[1]);
-
 
     if (start->value == '\0') {
         printf("could not perform lexing.\n");

@@ -8,6 +8,8 @@
 //     BRACE_CLOSE
 // }
 
+void emit_token(token **current, char value);
+
 token *lex(char *filename) {
     FILE *input = fopen(filename, "r");
     char c;
@@ -17,19 +19,20 @@ token *lex(char *filename) {
 //    char current = *input;
     while ((c = fgetc(input)) != EOF) {
         if (c == '{') {
-            head->value = c;
-            token *tmp = (token *)malloc(sizeof(token));
-            head->next = tmp;
-            head = tmp;
+            emit_token(&head, c);
         }
         if (c == '}') {
-            head->value = c;
-            token *tmp = (token *)malloc(sizeof(token));
-            head->next = tmp;
-            head = tmp;
+            emit_token(&head, c);
         }
     }
     fclose(input);
-    return tail;
+    return tail->next;
+}
+
+void emit_token(token **current, char value) {
+    token *tmp = (token *)calloc(1, sizeof(token));
+    tmp->value = value;
+    (*current)->next = tmp;
+    *current = tmp;
 }
 
