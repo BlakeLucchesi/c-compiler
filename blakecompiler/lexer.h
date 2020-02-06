@@ -4,6 +4,9 @@
 typedef enum _token_name {
     OPERATOR,
     BRACE,
+    PAREN,
+    STMT_END,
+    IDENTIFIER,
     VALUE,
 } token_name;
 

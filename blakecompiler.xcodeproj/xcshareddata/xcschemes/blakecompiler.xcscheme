@@ -52,7 +52,7 @@
       </BuildableProductRunnable>
       <CommandLineArguments>
          <CommandLineArgument
-            argument = "&quot;/Users/blakelucchesi/code/bcc/blakecompiler/Test Inputs/stage0.c&quot;"
+            argument = "&quot;/Users/blakelucchesi/code/bcc/blakecompiler/Test Inputs/return2.c&quot;"
             isEnabled = "YES">
          </CommandLineArgument>
       </CommandLineArguments>
