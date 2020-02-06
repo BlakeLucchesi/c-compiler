@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 #include "lexer.h"
 
@@ -7,7 +8,7 @@
 char take_next(FILE *input, char *buffer);
 char peek_next(FILE *input);
 
-void emit_token(token **current, char value, token_name name);
+void emit_token(token **current, char *buffer, uint *index, token_name name);
 
 token *lex(char *filename) {
     FILE *input = fopen(filename, "r");
@@ -27,20 +28,20 @@ token *lex(char *filename) {
                 index = 0;
             }
             else {
-                emit_token(&head, c, OPERATOR);
+                emit_token(&head, buffer, &index, OPERATOR);
             }
         }
         if ((int)c >= 48 && (int)c <= 57) { // ASCII integer values
-            emit_token(&head, c, VALUE);
+            emit_token(&head, buffer, &index, VALUE);
         }
         if (c == '+') {
-            emit_token(&head, c, OPERATOR);
+            emit_token(&head, buffer, &index, OPERATOR);
         }
         if (c == '{') {
-            emit_token(&head, c, BRACE);
+            emit_token(&head, buffer, &index, BRACE);
         }
         else if (c == '}') {
-            emit_token(&head, c, BRACE);
+            emit_token(&head, buffer, &index, BRACE);
         }
     }
     fclose(input);
@@ -59,17 +60,19 @@ char peek_next(FILE *input) {
 }
 
 // TODO: RESET BUFFER INDEX when passing buffer instead of value.
-void emit_token(token **current, char value, token_name name) {
+void emit_token(token **current, char *buffer, uint *index, token_name name) {
     token *tmp = (token *)calloc(1, sizeof(token));
-    tmp->value = value;
+    tmp->value = (char *)malloc((*index + 1) * sizeof(char));
+    memcpy(tmp->value, buffer, *index+1);
     tmp->name = name;
     (*current)->next = tmp;
+    *index = 0; // reset buffer index after token recorded.
     *current = tmp;
 }
 
 
 void print_debug(token *token) {
-    printf("%10s | %c\n", friendly_token_name(token), token->value);
+    printf("%10s | %s\n", friendly_token_name(token), token->value);
 }
 
 const char *friendly_token_name(token *token) {
@@ -82,4 +85,8 @@ const char *friendly_token_name(token *token) {
             return "value";
     }
     return "UNKNOWN";
+}
+
+void cleanup(token *head) {
+//    while (
 }

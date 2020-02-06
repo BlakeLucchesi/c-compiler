@@ -12,7 +12,7 @@ int main(int argc, char* argv[]) {
     printf("compiling %s\n", argv[1]);
    
     token *start = lex(argv[1]);
-
+    token *head = start;
     if (start->value == '\0') {
         printf("could not perform lexing.\n");
         return 10;
@@ -22,6 +22,7 @@ int main(int argc, char* argv[]) {
         start = start->next;
     }
     printf("FINISHED\n");
+    cleanup(head);
     return 0;
 }
 
