@@ -30,23 +30,29 @@ token *lex(char *filename) {
     while ((c = take_next(input, buffer, &index)) != EOF) {
         if (c == '/') {
             if (peek_next(input) == '/') {
-                while (take_next(input, buffer, &index) != '\n') {
-                    continue;
+                while (peek_next(input) != '\n') {
+                    take_next(input, buffer, &index);
                 }
-                index = 0;
+                emit_token(&head, buffer, &index, COMMENT);
             }
             else {
                 emit_token(&head, buffer, &index, OPERATOR);
             }
         }
         else if (c == ';') {
-            emit_token(&head, buffer, &index, STMT_END);
+            emit_token(&head, buffer, &index, SEPARATOR);
+        }
+        else if (c == '{' || c == '}') {
+            emit_token(&head, buffer, &index, SEPARATOR);
+        }
+        else if (c == '(' || c == ')') {
+            emit_token(&head, buffer, &index, SEPARATOR);
         }
         else if (is_number(c)) { // ASCII integer values
             while (is_number(peek_next(input))) {
                 take_next(input, buffer, &index);
             }
-            emit_token(&head, buffer, &index, VALUE);
+            emit_token(&head, buffer, &index, LITERAL);
         }
         else if (c == '+') {
             if (peek_next(input) == '+') {
@@ -68,12 +74,6 @@ token *lex(char *filename) {
         }
         else if (c == '|') {
             emit_token(&head, buffer, &index, OPERATOR);
-        }
-        else if (c == '{' || c == '}') {
-            emit_token(&head, buffer, &index, BRACE);
-        }
-        else if (c == '(' || c == ')') {
-            emit_token(&head, buffer, &index, PAREN);
         }
         else if (is_identifier_character(c)) {
             while (is_identifier_character(peek_next(input))) {
@@ -104,8 +104,9 @@ char peek_next(FILE *input) {
 // TODO: RESET BUFFER INDEX when passing buffer instead of value.
 void emit_token(token **current, char *buffer, uint *index, token_name name) {
     token *tmp = (token *)calloc(1, sizeof(token));
-    tmp->value = (char *)malloc((*index) * sizeof(char));
+    tmp->value = (char *)malloc((*index + 1)* sizeof(char));
     memcpy(tmp->value, buffer, *index);
+    buffer[*index] = '\0';
     tmp->name = name;
     (*current)->next = tmp;
     *index = 0; // reset buffer index after token recorded.
@@ -121,16 +122,16 @@ const char *friendly_token_name(token *token) {
     switch (token->name) {
         case OPERATOR:
             return "Operator";
-        case BRACE:
-            return "Brace";
+        case SEPARATOR:
+            return "Separator";
         case IDENTIFIER:
             return "Identifier";
-        case VALUE:
-            return "Value";
-        case PAREN:
-            return "Parenthesis";
-        case STMT_END:
-            return "End Statement";
+        case LITERAL:
+            return "Literal";
+        case COMMENT:
+            return "Comment";
+        case KEYWORD:
+            return "Keyword";
     }
     return "UNKNOWN";
 }

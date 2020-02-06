@@ -3,11 +3,11 @@
 
 typedef enum _token_name {
     OPERATOR,
-    BRACE,
-    PAREN,
-    STMT_END,
+    SEPARATOR,
     IDENTIFIER,
-    VALUE,
+    KEYWORD,
+    LITERAL,
+    COMMENT,
 } token_name;
 
 typedef struct _token {
