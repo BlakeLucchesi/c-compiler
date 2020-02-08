@@ -1,10 +1,12 @@
+//  Copyright © 2020 Blake Lucchesi. All rights reserved.
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include <stdbool.h>
 
 #include "lexer.h"
-
+#include "keywords.h"
 
 char take_next(FILE *input, char *buffer, uint *index);
 char peek_next(FILE *input);
@@ -79,7 +81,10 @@ token *lex(char *filename) {
             while (is_identifier_character(peek_next(input))) {
                 take_next(input, buffer, &index);
             }
-            emit_token(&head, buffer, &index, IDENTIFIER);
+            char *value = malloc(sizeof(char) * (index + 1));
+            strncpy(value, buffer, index);
+            emit_token(&head, buffer, &index, is_keyword(value) || is_type(value) ? KEYWORD : IDENTIFIER);
+            free(value);
         }
         index = 0;
     }

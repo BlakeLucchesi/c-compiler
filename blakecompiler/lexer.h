@@ -1,5 +1,4 @@
-// C Lexer
-
+//  Copyright © 2020 Blake Lucchesi. All rights reserved.
 
 typedef enum _token_name {
     OPERATOR,
