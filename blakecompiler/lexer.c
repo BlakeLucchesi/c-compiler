@@ -105,8 +105,8 @@ char peek_next(FILE *input) {
 void emit_token(token **current, char *buffer, uint *index, token_name name) {
     token *tmp = (token *)calloc(1, sizeof(token));
     tmp->value = (char *)malloc((*index + 1)* sizeof(char));
-    memcpy(tmp->value, buffer, *index);
-    buffer[*index] = '\0';
+    strncpy(tmp->value, buffer, *index);
+    tmp->value[*index] = '\0';
     tmp->name = name;
     (*current)->next = tmp;
     *index = 0; // reset buffer index after token recorded.
