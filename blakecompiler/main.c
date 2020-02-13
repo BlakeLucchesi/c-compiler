@@ -5,6 +5,7 @@
 
 #include "lexer.h"
 #include "parser.h"
+#include "generater.h"
 
 int main(int argc, char* argv[]) {
 
@@ -26,7 +27,12 @@ int main(int argc, char* argv[]) {
         start = start->next;
     }
     printf("Parsing...\n");
-    parse(&head);
+    AST_Program *program = parse(&head);
+    
+    printf("Generating Output\n");
+    FILE *outfile = fopen("/Users/blakelucchesi/code/bcc/program.a", "w");
+    generate(program, outfile);
+    fclose(outfile);
     
     printf("Complete!\n");
     cleanup(head);
