@@ -1,5 +1,8 @@
 //  Copyright © 2020 Blake Lucchesi. All rights reserved.
 
+#ifndef lexer_h
+#define lexer_h
+
 typedef enum _token_name {
     OPERATOR,
     SEPARATOR,
@@ -7,11 +10,11 @@ typedef enum _token_name {
     KEYWORD,
     LITERAL,
     COMMENT,
-} token_name;
+} TokenName;
 
 typedef struct _token {
     char *value;
-    token_name name;
+    TokenName name;
     struct _token *next;
 } token;
 
@@ -23,3 +26,5 @@ const char *friendly_token_name(token *token);
 
 // walks through lexemes and deallocates managed memory.
 void cleanup(token *head);
+
+#endif

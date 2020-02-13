@@ -11,7 +11,7 @@
 char take_next(FILE *input, char *buffer, uint *index);
 char peek_next(FILE *input);
 
-void emit_token(token **current, char *buffer, uint *index, token_name name);
+void emit_token(token **current, char *buffer, uint *index, TokenName name);
 
 bool is_number(char c);
 bool is_letter(char c);
@@ -27,7 +27,7 @@ token *lex(char *filename) {
     char buffer[240];
     uint index = 0;
     
-    token *head = (token *)malloc(sizeof(token));
+    token *head = (token *)calloc(1, sizeof(token));
     token *tail = head;
     while ((c = take_next(input, buffer, &index)) != EOF) {
         if (c == '/') {
@@ -107,7 +107,7 @@ char peek_next(FILE *input) {
 }
 
 // TODO: RESET BUFFER INDEX when passing buffer instead of value.
-void emit_token(token **current, char *buffer, uint *index, token_name name) {
+void emit_token(token **current, char *buffer, uint *index, TokenName name) {
     token *tmp = (token *)calloc(1, sizeof(token));
     tmp->value = (char *)malloc((*index + 1)* sizeof(char));
     strncpy(tmp->value, buffer, *index);
