@@ -13,12 +13,12 @@ typedef struct _ast_details {
 } AST_Details;
 
 typedef struct _ast_identifier {
-    char *value;
+    char *name;
     AST_Details details;
 } AST_Identifier;
 
 typedef struct _ast_expression {
-    char *name;
+    char *value;
     AST_Details details;
 } AST_Expression;
 

@@ -37,7 +37,7 @@ AST_Expression *parse_expression(token **start) {
     if (current->name != LITERAL) {
         fail();
     }
-    expression->name = current->value;
+    expression->value = current->value;
     *start = current->next;
     return expression;
 }
@@ -91,7 +91,7 @@ AST_Function *parse_function(token **start) {
                 if (states[pos] != IDENTIFIER)
                     fail();
                 function->identifier = malloc(sizeof(AST_Identifier));
-                function->identifier->value = current->value;
+                function->identifier->name = current->value;
                 current = current->next;
                 pos++;
                 break;
