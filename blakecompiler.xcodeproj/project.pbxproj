@@ -27,6 +27,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		5D5989BA23FA6AFA007C402A /* debug.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = debug.h; sourceTree = "<group>"; };
 		5D638CD223F6156E009F6476 /* generater.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = generater.h; sourceTree = "<group>"; };
 		5D638CD323F6156E009F6476 /* generater.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = generater.c; sourceTree = "<group>"; };
 		5D80677F23EA89660041EA5E /* blakecompiler */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = blakecompiler; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -81,6 +82,7 @@
 				5DEB8B5423EE387E0018CFF5 /* parser.c */,
 				5D638CD223F6156E009F6476 /* generater.h */,
 				5D638CD323F6156E009F6476 /* generater.c */,
+				5D5989BA23FA6AFA007C402A /* debug.h */,
 			);
 			path = blakecompiler;
 			sourceTree = "<group>";

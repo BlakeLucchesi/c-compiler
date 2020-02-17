@@ -7,6 +7,7 @@
 
 #include "lexer.h"
 #include "keywords.h"
+#include "debug.h"
 
 char take_next(FILE *input, char *buffer, uint *index);
 char peek_next(FILE *input);
@@ -120,7 +121,7 @@ void emit_token(token **current, char *buffer, uint *index, TokenName name) {
 
 
 void print_debug(token *token) {
-    printf("%15s | %s\n", friendly_token_name(token), token->value);
+    debug("%15s | %s\n", friendly_token_name(token), token->value);
 }
 
 const char *friendly_token_name(token *token) {
