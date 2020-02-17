@@ -30,7 +30,7 @@ int main(int argc, char* argv[]) {
     AST_Program *program = parse(&head);
     
     printf("Generating Output\n");
-    FILE *outfile = fopen("/Users/blakelucchesi/code/bcc/program.a", "w");
+    FILE *outfile = fopen("/Users/blakelucchesi/code/bcc/program.s", "w");
     generate(program, outfile);
     fclose(outfile);
     
