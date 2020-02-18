@@ -66,9 +66,6 @@ token *lex(char *filename) {
                 emit_token(&head, buffer, &index, OPERATOR);
             }
         }
-        else if (c == '-') {
-            emit_token(&head, buffer, &index, OPERATOR);
-        }
         else if (c == '*') {
             emit_token(&head, buffer, &index, OPERATOR);
         }
@@ -77,6 +74,15 @@ token *lex(char *filename) {
         }
         else if (c == '|') {
             emit_token(&head, buffer, &index, OPERATOR);
+        }
+        else if (c == '!') {
+            emit_token(&head, buffer, &index, LOGICAL_NEGATION);
+        }
+        else if (c == '-') {
+            emit_token(&head, buffer, &index, NEGATION);
+        }
+        else if (c == '~') {
+            emit_token(&head, buffer, &index, BITWISE_COMPLEMENT);
         }
         else if (is_identifier_character(c)) {
             while (is_identifier_character(peek_next(input))) {
@@ -138,15 +144,23 @@ const char *friendly_token_name(token *token) {
             return "Comment";
         case KEYWORD:
             return "Keyword";
+        case BITWISE_COMPLEMENT:
+            return "~";
+        case NEGATION:
+            return "Negation";
+        case LOGICAL_NEGATION:
+            return "NOT";
     }
     return "UNKNOWN";
 }
 
 void cleanup(token *head) {
-//    while (
+//    token *op = head;
+//    while (op != NULL) {
+//        free(op->value);
+//        op = op->next;
+//    }
 }
-
-
 
 bool is_number(char c) {
     return (int)c >= 48 && (int)c <= 57;

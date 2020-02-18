@@ -10,6 +10,9 @@ typedef enum _token_name {
     KEYWORD,
     LITERAL,
     COMMENT,
+    NEGATION,
+    LOGICAL_NEGATION,
+    BITWISE_COMPLEMENT,
 } TokenName;
 
 typedef struct _token {
