@@ -1,9 +1,10 @@
 //  Copyright © 2020 Blake Lucchesi. All rights reserved.
 
+
 #ifndef debug_h
 #define debug_h
 
-static int LOGS_ENABLED;
+extern int LOGS_ENABLED;
 
 #define debug(string, ...) \
 if (LOGS_ENABLED) { \

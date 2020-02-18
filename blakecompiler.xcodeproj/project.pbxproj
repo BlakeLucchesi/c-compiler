@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5D5989C723FC85E0007C402A /* debug.c in Sources */ = {isa = PBXBuildFile; fileRef = 5D5989C623FC85E0007C402A /* debug.c */; };
 		5D638CD423F6156E009F6476 /* generater.c in Sources */ = {isa = PBXBuildFile; fileRef = 5D638CD323F6156E009F6476 /* generater.c */; };
 		5D80678323EA89660041EA5E /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 5D80678223EA89660041EA5E /* main.c */; };
 		5D80678E23EA89990041EA5E /* lexer.c in Sources */ = {isa = PBXBuildFile; fileRef = 5D80678923EA89990041EA5E /* lexer.c */; };
@@ -28,6 +29,7 @@
 
 /* Begin PBXFileReference section */
 		5D5989BA23FA6AFA007C402A /* debug.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = debug.h; sourceTree = "<group>"; };
+		5D5989C623FC85E0007C402A /* debug.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = debug.c; sourceTree = "<group>"; };
 		5D638CD223F6156E009F6476 /* generater.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = generater.h; sourceTree = "<group>"; };
 		5D638CD323F6156E009F6476 /* generater.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = generater.c; sourceTree = "<group>"; };
 		5D80677F23EA89660041EA5E /* blakecompiler */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = blakecompiler; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -83,6 +85,7 @@
 				5D638CD223F6156E009F6476 /* generater.h */,
 				5D638CD323F6156E009F6476 /* generater.c */,
 				5D5989BA23FA6AFA007C402A /* debug.h */,
+				5D5989C623FC85E0007C402A /* debug.c */,
 			);
 			path = blakecompiler;
 			sourceTree = "<group>";
@@ -157,6 +160,7 @@
 				5D80678E23EA89990041EA5E /* lexer.c in Sources */,
 				5DEB8B5223EC9DB50018CFF5 /* keywords.c in Sources */,
 				5D638CD423F6156E009F6476 /* generater.c in Sources */,
+				5D5989C723FC85E0007C402A /* debug.c in Sources */,
 				5DEB8B5523EE387E0018CFF5 /* parser.c in Sources */,
 				5D80678323EA89660041EA5E /* main.c in Sources */,
 			);
