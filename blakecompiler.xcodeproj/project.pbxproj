@@ -93,7 +93,8 @@
 				5D80678C23EA89990041EA5E /* return2.c */,
 				5DB2489523EB637100551FD7 /* stage0.c */,
 			);
-			path = "Test Inputs";
+			name = "Test Inputs";
+			path = tests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

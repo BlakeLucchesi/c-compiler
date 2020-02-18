@@ -121,7 +121,7 @@ void emit_token(token **current, char *buffer, uint *index, TokenName name) {
 
 
 void print_debug(token *token) {
-    debug("%15s | %s\n", friendly_token_name(token), token->value);
+    debug("%15s | %s", friendly_token_name(token), token->value);
 }
 
 const char *friendly_token_name(token *token) {
