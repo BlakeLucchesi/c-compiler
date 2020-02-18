@@ -3,10 +3,11 @@
 #ifndef debug_h
 #define debug_h
 
-#if DEBUG
-#define debug(string, ...) printf(string "\n", ##__VA_ARGS__)
-#else
-#define debug(string, ...)
-#endif
+static int LOGS_ENABLED;
+
+#define debug(string, ...) \
+if (LOGS_ENABLED) { \
+    printf(string "\n", ##__VA_ARGS__); \
+}
 
 #endif /* debug_h */

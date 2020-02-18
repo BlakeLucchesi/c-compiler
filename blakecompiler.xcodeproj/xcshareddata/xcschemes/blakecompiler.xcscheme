@@ -55,6 +55,10 @@
             argument = "&quot;/Users/blakelucchesi/code/bcc/tests/stage_1/valid/return_2.c&quot;"
             isEnabled = "YES">
          </CommandLineArgument>
+         <CommandLineArgument
+            argument = "LOGS"
+            isEnabled = "YES">
+         </CommandLineArgument>
       </CommandLineArguments>
    </LaunchAction>
    <ProfileAction

@@ -14,6 +14,11 @@
 
 int main(int argc, char* argv[]) {
 
+    // todo allow debug logs via arg
+    if (argc == 3) {
+        LOGS_ENABLED = 1;
+    }
+
     if (argc < 2) {
         debug("You must specify an input file.");
         return -1;
