@@ -72,7 +72,7 @@ int main(int argc, char* argv[]) {
         debug("Complete!");
     }
     
-    remove(assembly_file_name);
+//    remove(assembly_file_name);
     free(assembly_file_name);
     free(executable_file_name);
     cleanup(head);

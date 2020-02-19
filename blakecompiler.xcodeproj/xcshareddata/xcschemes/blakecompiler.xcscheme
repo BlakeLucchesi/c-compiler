@@ -52,7 +52,7 @@
       </BuildableProductRunnable>
       <CommandLineArguments>
          <CommandLineArgument
-            argument = "&quot;/Users/blakelucchesi/code/bcc/tests/stage_2/valid/nested_ops.c&quot;"
+            argument = "&quot;/Users/blakelucchesi/code/bcc-tests/stage_2/valid/nested_ops.c&quot;"
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
