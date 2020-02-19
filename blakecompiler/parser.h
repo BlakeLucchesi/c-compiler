@@ -17,8 +17,15 @@ typedef struct _ast_identifier {
     AST_Details details;
 } AST_Identifier;
 
+typedef struct _ast_unary_operator {
+    char *value;
+    AST_Details details;
+} AST_Unary_Operator;
+
 typedef struct _ast_expression {
     char *value;
+    AST_Unary_Operator *unary_operator;
+    struct _ast_expression *expression;
     AST_Details details;
 } AST_Expression;
 

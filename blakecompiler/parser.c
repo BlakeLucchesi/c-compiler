@@ -4,18 +4,34 @@
 #include <string.h>
 
 #include "parser.h"
+#include "debug.h"
 
 void fail(void);
 
 AST_Expression *parse_expression(token **start) {
-    AST_Expression *expression = (AST_Expression*)malloc(sizeof(AST_Expression));
+    AST_Expression *expression = (AST_Expression*)calloc(1, sizeof(AST_Expression));
     token *current = *start;
-    if (current->name != LITERAL) {
-        fail();
+    switch (current->name) {
+        case BITWISE_COMPLEMENT:
+        case NEGATION:
+        case LOGICAL_NEGATION: {
+            AST_Unary_Operator *uop = (AST_Unary_Operator *)malloc(sizeof(AST_Unary_Operator));
+            uop->value = current->value;
+            expression->unary_operator = uop;
+            *start = current->next;
+            expression->expression = parse_expression(start);
+            return expression;
+        }
+        case LITERAL: {
+            expression->value = current->value;
+            *start = current->next;
+            return expression;
+        }
+        default:
+            fail();
     }
-    expression->value = current->value;
-    *start = current->next;
-    return expression;
+    fail();
+    return NULL;
 }
 
 AST_Statement *parse_statement(token **start) {
@@ -48,6 +64,9 @@ AST_Function *parse_function(token **start) {
     AST_Function *function = malloc(sizeof(AST_Function));
     while (current != NULL) {
         switch (current->name) {
+            case NEGATION:
+            case LOGICAL_NEGATION:
+            case BITWISE_COMPLEMENT:
             case OPERATOR:
                 fail();
             case SEPARATOR:
@@ -110,5 +129,6 @@ AST_Program *parse(token **start) {
 }
 
 void fail() {
+    debug("Failed parsing");
     exit(EXIT_FAILURE);
 }
