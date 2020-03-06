@@ -12,7 +12,7 @@
 char take_next(FILE *input, char *buffer, uint *index);
 char peek_next(FILE *input);
 
-void emit_token(token **current, char *buffer, uint *index, TokenName name);
+void emit_token(token **current, char *buffer, uint *index, TokenClass name);
 
 bool is_number(char c);
 bool is_letter(char c);
@@ -30,69 +30,90 @@ token *lex(char *filename) {
     
     token *head = (token *)calloc(1, sizeof(token));
     token *tail = head;
+    TokenClass token_class = UNDEFINED_TOKEN;
+//    TokenName token_name = OPERATOR_DIVISOR;
     while ((c = take_next(input, buffer, &index)) != EOF) {
+        token_class = UNDEFINED_TOKEN;
         if (c == '/') {
             if (peek_next(input) == '/') {
                 while (peek_next(input) != '\n') {
                     take_next(input, buffer, &index);
                 }
-                emit_token(&head, buffer, &index, COMMENT);
+                token_class = COMMENT;
             }
             else {
-                emit_token(&head, buffer, &index, OPERATOR);
+                token_class = OPERATOR;
             }
         }
         else if (c == ';') {
-            emit_token(&head, buffer, &index, SEPARATOR);
+            token_class = SEPARATOR;
+//            token_name = SEPARATOR_SEMICOLON;
         }
-        else if (c == '{' || c == '}') {
-            emit_token(&head, buffer, &index, SEPARATOR);
+        else if (c == '{') {
+            token_class = SEPARATOR;
+//            token_name = SEPARATOR_BRACE_OPEN;
         }
-        else if (c == '(' || c == ')') {
-            emit_token(&head, buffer, &index, SEPARATOR);
+        else if (c == '}') {
+            token_class = SEPARATOR;
+//            token_name = SEPARATOR_BRACE_CLOSE;
+        }
+        else if (c == '(') {
+            token_class = SEPARATOR;
+//            token_name = SEPARATOR_PAREN_OPEN;
+        }
+        else if (c == ')') {
+            token_class = SEPARATOR;
+//            token_name = SEPARATOR_PAREN_CLOSE;
+        }
+        else if (c == '+') {
+            if (peek_next(input) == '+') {
+                take_next(input, buffer, &index);
+                token_class = OPERATOR;
+            }
+            else {
+                token_class = OPERATOR;
+            }
+        }
+        else if (c == '-') {
+            token_class = OPERATOR;
+//            token_name = OPERATOR_NEGATION;
+        }
+        else if (c == '*') {
+            token_class = OPERATOR;
+//            token_name = OPERATOR_MULTIPLICATION;
+        }
+        else if (c == '&') {
+            token_class = OPERATOR;
+//            token_name = OPERATOR_LOGICAL_NEGATION
+        }
+        else if (c == '|') {
+            token_class = OPERATOR;
+        }
+        else if (c == '!') {
+            token_class = OPERATOR;
+//            token_name = OPERATOR_LOGICAL_NEGATION;
+        }
+        else if (c == '~') {
+            token_class = OPERATOR;
+//            token_name = OPERATOR_BITWISE_COMPLEMENT;
         }
         else if (is_number(c)) { // ASCII integer values
             while (is_number(peek_next(input))) {
                 take_next(input, buffer, &index);
             }
-            emit_token(&head, buffer, &index, LITERAL);
-        }
-        else if (c == '+') {
-            if (peek_next(input) == '+') {
-                take_next(input, buffer, &index);
-                emit_token(&head, buffer, &index, OPERATOR);
-            }
-            else {
-                emit_token(&head, buffer, &index, OPERATOR);
-            }
-        }
-        else if (c == '*') {
-            emit_token(&head, buffer, &index, OPERATOR);
-        }
-        else if (c == '&') {
-            emit_token(&head, buffer, &index, OPERATOR);
-        }
-        else if (c == '|') {
-            emit_token(&head, buffer, &index, OPERATOR);
-        }
-        else if (c == '!') {
-            emit_token(&head, buffer, &index, LOGICAL_NEGATION);
-        }
-        else if (c == '-') {
-            emit_token(&head, buffer, &index, NEGATION);
-        }
-        else if (c == '~') {
-            emit_token(&head, buffer, &index, BITWISE_COMPLEMENT);
+            token_class = LITERAL;
         }
         else if (is_identifier_character(c)) {
             while (is_identifier_character(peek_next(input))) {
                 take_next(input, buffer, &index);
             }
             char *value = malloc(sizeof(char) * (index + 1));
-            strncpy(value, buffer, index);
-            emit_token(&head, buffer, &index, is_keyword(value) || is_type(value) ? KEYWORD : IDENTIFIER);
+            strncpy(value, buffer, index); // TODO: do we need to copy?
+            token_class = is_keyword(value) || is_type(value) ? KEYWORD : IDENTIFIER;
             free(value);
         }
+        if (token_class != UNDEFINED_TOKEN)
+            emit_token(&head, buffer, &index, token_class);
         index = 0;
     }
     fclose(input);
@@ -114,12 +135,12 @@ char peek_next(FILE *input) {
 }
 
 // TODO: RESET BUFFER INDEX when passing buffer instead of value.
-void emit_token(token **current, char *buffer, uint *index, TokenName name) {
+void emit_token(token **current, char *buffer, uint *index, TokenClass name) {
     token *tmp = (token *)calloc(1, sizeof(token));
     tmp->value = (char *)malloc((*index + 1)* sizeof(char));
     strncpy(tmp->value, buffer, *index);
     tmp->value[*index] = '\0';
-    tmp->name = name;
+    tmp->klass = name;
     (*current)->next = tmp;
     *index = 0; // reset buffer index after token recorded.
     *current = tmp;
@@ -131,9 +152,17 @@ void print_debug(token *token) {
 }
 
 const char *friendly_token_name(token *token) {
-    switch (token->name) {
+    switch (token->klass) {
+        case UNDEFINED_TOKEN:
+            return "UNDEFINED";
         case OPERATOR:
             return "Operator";
+            //    case BITWISE_COMPLEMENT:
+            //        return "~";
+            //    case NEGATION:
+            //        return "Negation";
+            //    case LOGICAL_NEGATION:
+            //        return "NOT";
         case SEPARATOR:
             return "Separator";
         case IDENTIFIER:
@@ -144,12 +173,6 @@ const char *friendly_token_name(token *token) {
             return "Comment";
         case KEYWORD:
             return "Keyword";
-        case BITWISE_COMPLEMENT:
-            return "~";
-        case NEGATION:
-            return "Negation";
-        case LOGICAL_NEGATION:
-            return "NOT";
     }
     return "UNKNOWN";
 }
