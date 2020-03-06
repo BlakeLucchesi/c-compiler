@@ -46,15 +46,15 @@ typedef struct _token {
         KeywordType key;
     };
     struct _token *next;
-} token;
+} Token;
 
 
-token *lex(char *input);
+Token *lex(char *input);
 
-void print_debug(token *token);
-const char *friendly_token_name(token *token);
+void print_debug(Token *token);
+const char *friendly_token_name(Token *token);
 
 // walks through lexemes and deallocates managed memory.
-void cleanup(token *head);
+void cleanup(Token *head);
 
 #endif

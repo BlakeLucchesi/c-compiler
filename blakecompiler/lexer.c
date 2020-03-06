@@ -12,7 +12,7 @@
 char take_next(FILE *input, char *buffer, uint *index);
 char peek_next(FILE *input);
 
-void emit_token(token **current, char *buffer, uint *index, TokenClass name);
+void emit_token(Token **current, char *buffer, uint *index, TokenClass name);
 
 bool is_number(char c);
 bool is_letter(char c);
@@ -21,15 +21,15 @@ bool is_uppercase(char c);
 bool is_whitespace(char c);
 bool is_identifier_character(char c);
 
-token *lex(char *filename) {
+Token *lex(char *filename) {
     FILE *input = fopen(filename, "r");
     char c;
     
     char buffer[240];
     uint index = 0;
     
-    token *head = (token *)calloc(1, sizeof(token));
-    token *tail = head;
+    Token *head = (Token *)calloc(1, sizeof(Token));
+    Token *tail = head;
     TokenClass token_class = UNDEFINED_TOKEN;
 //    TokenName token_name = OPERATOR_DIVISOR;
     while ((c = take_next(input, buffer, &index)) != EOF) {
@@ -135,8 +135,8 @@ char peek_next(FILE *input) {
 }
 
 // TODO: RESET BUFFER INDEX when passing buffer instead of value.
-void emit_token(token **current, char *buffer, uint *index, TokenClass name) {
-    token *tmp = (token *)calloc(1, sizeof(token));
+void emit_token(Token **current, char *buffer, uint *index, TokenClass name) {
+    Token *tmp = (Token *)calloc(1, sizeof(Token));
     tmp->value = (char *)malloc((*index + 1)* sizeof(char));
     strncpy(tmp->value, buffer, *index);
     tmp->value[*index] = '\0';
@@ -147,11 +147,11 @@ void emit_token(token **current, char *buffer, uint *index, TokenClass name) {
 }
 
 
-void print_debug(token *token) {
+void print_debug(Token *token) {
     debug("%15s | %s", friendly_token_name(token), token->value);
 }
 
-const char *friendly_token_name(token *token) {
+const char *friendly_token_name(Token *token) {
     switch (token->klass) {
         case UNDEFINED_TOKEN:
             return "UNDEFINED";
@@ -177,7 +177,7 @@ const char *friendly_token_name(token *token) {
     return "UNKNOWN";
 }
 
-void cleanup(token *head) {
+void cleanup(Token *head) {
 //    token *op = head;
 //    while (op != NULL) {
 //        free(op->value);

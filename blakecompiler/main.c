@@ -26,8 +26,8 @@ int main(int argc, char* argv[]) {
     debug("Compiling %s", argv[1]);
    
     debug("Lexing...");
-    token *start = lex(argv[1]);
-    token *head = start;
+    Token *start = lex(argv[1]);
+    Token *head = start;
     if (start->value == '\0') {
         debug("Error: Could not perform lexing.");
         return 10;

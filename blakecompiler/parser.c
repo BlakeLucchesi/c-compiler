@@ -8,9 +8,9 @@
 
 void fail(void);
 
-AST_Expression *parse_expression(token **start) {
+AST_Expression *parse_expression(Token **start) {
     AST_Expression *expression = (AST_Expression*)calloc(1, sizeof(AST_Expression));
-    token *current = *start;
+    Token *current = *start;
     switch (current->klass) {
         case OPERATOR: {
             switch (current->op) {
@@ -40,9 +40,9 @@ AST_Expression *parse_expression(token **start) {
     return NULL;
 }
 
-AST_Statement *parse_statement(token **start) {
+AST_Statement *parse_statement(Token **start) {
     AST_Statement *statement = (AST_Statement*)malloc(sizeof(AST_Statement));
-    token *current = *start;
+    Token *current = *start;
     if (current->klass != KEYWORD && strcmp(current->value, "return") != 0) {
         fail();
     }
@@ -56,29 +56,26 @@ AST_Statement *parse_statement(token **start) {
     return statement;
 }
 
-AST_Function *parse_function(token **start) {
-    token *current = *start;
+AST_Function *parse_function(Token **start) {
+    Token *current = *start;
     uint pos = 0;
-    TokenClass states[6] = {
-        KEYWORD,
-        IDENTIFIER,
-        SEPARATOR,
-        SEPARATOR,
-        SEPARATOR,
-        SEPARATOR,
+    Token states[6] = {
+        { .klass = KEYWORD, .key = KEYWORD_RETURN },
+        { .klass = IDENTIFIER },
+        { .klass = SEPARATOR, .sep = SEP_PAREN_OPEN },
+        { .klass = SEPARATOR, .sep = SEP_PAREN_CLOSE },
+        { .klass = SEPARATOR, .sep = SEP_BRACE_OPEN },
+        { .klass = SEPARATOR, .sep = SEP_BRACE_CLOSE },
     };
     AST_Function *function = malloc(sizeof(AST_Function));
     while (current != NULL) {
         switch (current->klass) {
-            case UNDEFINED_TOKEN:
-            case OPERATOR:
-                fail();
             case SEPARATOR:
-                if (states[pos] != SEPARATOR)
+                if (states[pos].klass != current->klass && states[pos].sep != current->sep)
                     fail();
                 current = current->next;
                 pos++;
-                if (pos == 5) {
+                if (states[pos].sep == SEP_BRACE_CLOSE) {
                     function->statement = parse_statement(&current);
                 }
                 else if (pos == 6) {
@@ -87,7 +84,7 @@ AST_Function *parse_function(token **start) {
                 }
                 break;
             case IDENTIFIER:
-                if (states[pos] != IDENTIFIER)
+                if (states[pos].klass != current->klass)
                     fail();
                 function->identifier = malloc(sizeof(AST_Identifier));
                 function->identifier->name = current->value;
@@ -95,18 +92,22 @@ AST_Function *parse_function(token **start) {
                 pos++;
                 break;
             case KEYWORD:
-                if (states[pos] != KEYWORD)
+                if (states[pos].klass != current->klass)
+                    fail();
+                if (current->key != KEYWORD_RETURN)
                     fail();
                 // TODO capture return type.
                 current = current->next;
                 pos++;
                 break;
-            case LITERAL:
-                fail();
-                break;
             case COMMENT:
                 // TODO: add comments to AST
                 current = current->next;
+                break;
+            case UNDEFINED_TOKEN:
+            case OPERATOR:
+            case LITERAL:
+                fail();
                 break;
         }
     }
@@ -114,9 +115,9 @@ AST_Function *parse_function(token **start) {
     return NULL;
 }
 
-AST_Program *parse(token **start) {
+AST_Program *parse(Token **start) {
     AST_Program *program = (AST_Program*)malloc(sizeof(AST_Program));
-    token *current = *start;
+    Token *current = *start;
     while (current != NULL) {
         if (current->klass == KEYWORD) {
             program->function = parse_function(&current);

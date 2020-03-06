@@ -54,6 +54,6 @@ typedef struct _ast_program {
 //
 // AST_Comment}
 
-AST_Program *parse(token **start);
+AST_Program *parse(Token **start);
 
 #endif /* parser_h */
