@@ -10,50 +10,58 @@
 typedef struct _ast_details {
     int line;
     int start;
-} AST_Details;
+} ASTDetails;
 
 typedef struct _ast_identifier {
     char *name;
-    AST_Details details;
-} AST_Identifier;
+    ASTDetails details;
+} ASTIdentifier;
 
 typedef struct _ast_unary_operator {
     char *value;
-    AST_Details details;
-} AST_Unary_Operator;
+    ASTDetails details;
+} ASTUnaryOperator;
 
 typedef struct _ast_expression {
     char *value;
-    AST_Unary_Operator *unary_operator;
+    ASTUnaryOperator *unary_operator;
     struct _ast_expression *expression;
-    AST_Details details;
-} AST_Expression;
+    ASTDetails details;
+} ASTExpression;
 
-//typedef struct _ast_return {
-//    AST_Expression *expression;
-//    AST_Details details;
-//} AST_Return;
+typedef struct _ast_return {
+    ASTExpression *expression;
+    ASTDetails details;
+} ASTReturn;
 
 typedef struct _ast_statement {
-    AST_Expression *expression;
-    AST_Details details;
-} AST_Statement;
+    ASTExpression *expression;
+    ASTDetails details;
+} ASTStatement;
 
 typedef struct _ast_function {
-    AST_Identifier *identifier;
-    AST_Statement *statement;
-    AST_Details details;
-} AST_Function;
+    ASTIdentifier *identifier;
+    ASTStatement *statement;
+    ASTDetails details;
+} ASTFunction;
+
+typedef struct _ast_comment {
+    char *value;
+    ASTDetails details;
+} ASTComment;
+
+typedef struct _ast_error {
+    Token *token;
+    char *message;
+    struct _ast_error *next;
+} ASTError;
 
 typedef struct _ast_program {
-    AST_Function *function;
-    AST_Details details;
-} AST_Program;
+    ASTFunction *function;
+    ASTDetails details;
+    ASTError *errors;
+} ASTProgram;
 
-//typedef struct _ast_comment {
-//
-// AST_Comment}
-
-AST_Program *parse(Token **start);
+ASTProgram *ASTParse(Token **start);
 
 #endif /* parser_h */

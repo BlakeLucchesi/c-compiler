@@ -3,22 +3,22 @@
 #include "generater.h"
 #include "debug.h"
 
-void process_function(AST_Function *function, FILE *output);
-void process_statement(AST_Statement *statement, FILE *output);
-void process_expression(AST_Expression *expression, FILE *output);
+void process_function(ASTFunction *function, FILE *output);
+void process_statement(ASTStatement *statement, FILE *output);
+void process_expression(ASTExpression *expression, FILE *output);
 
-void generate(AST_Program *program, FILE *output) {
+void generate(ASTProgram *program, FILE *output) {
     process_function(program->function, output);
 }
 
-void process_function(AST_Function *function, FILE *output) {
+void process_function(ASTFunction *function, FILE *output) {
     fprintf(output, ".globl _%s\n", function->identifier->name);
     fprintf(output, "_%s:\n", function->identifier->name);
     process_statement(function->statement, output);
     fprintf(output, " ret\n");
 }
 
-void process_expression(AST_Expression *expression, FILE *output) {
+void process_expression(ASTExpression *expression, FILE *output) {
     if (expression->value) {
         fprintf(output, " movl $%s, %%eax\n", expression->value);
     }
@@ -41,6 +41,6 @@ void process_expression(AST_Expression *expression, FILE *output) {
     }
 }
 
-void process_statement(AST_Statement *statement, FILE *output) {
+void process_statement(ASTStatement *statement, FILE *output) {
     process_expression(statement->expression, output);
 }

@@ -8,8 +8,8 @@
 
 void fail(Token *token, char *message);
 
-AST_Expression *parse_expression(Token **start) {
-    AST_Expression *expression = (AST_Expression*)calloc(1, sizeof(AST_Expression));
+ASTExpression *parse_expression(Token **start) {
+    ASTExpression *expression = (ASTExpression*)calloc(1, sizeof(ASTExpression));
     Token *current = *start;
     switch (current->klass) {
         case OPERATOR: {
@@ -17,7 +17,7 @@ AST_Expression *parse_expression(Token **start) {
                 case OP_LOGICAL_NEGATION:
                 case OP_NEGATION:
                 case OP_BITWISE_COMPLEMENT: {
-                    AST_Unary_Operator *uop = (AST_Unary_Operator *)malloc(sizeof(AST_Unary_Operator));
+                    ASTUnaryOperator *uop = (ASTUnaryOperator *)malloc(sizeof(ASTUnaryOperator));
                     uop->value = current->value;
                     expression->unary_operator = uop;
                     *start = current->next;
@@ -39,8 +39,8 @@ AST_Expression *parse_expression(Token **start) {
     }
 }
 
-AST_Statement *parse_statement(Token **start) {
-    AST_Statement *statement = (AST_Statement*)malloc(sizeof(AST_Statement));
+ASTStatement *parse_statement(Token **start) {
+    ASTStatement *statement = (ASTStatement*)malloc(sizeof(ASTStatement));
     Token *current = *start;
     if (current->klass != KEYWORD && strcmp(current->value, "return") != 0) {
         fail(current, "Statement must begin with return keyword");
@@ -56,7 +56,7 @@ AST_Statement *parse_statement(Token **start) {
     return NULL;
 }
 
-AST_Function *parse_function(Token **start) {
+ASTFunction *parse_function(Token **start) {
     Token *current = *start;
     uint pos = 0;
     Token states[6] = {
@@ -67,7 +67,7 @@ AST_Function *parse_function(Token **start) {
         { .klass = SEPARATOR, .sep = SEP_BRACE_OPEN },
         { .klass = SEPARATOR, .sep = SEP_BRACE_CLOSE },
     };
-    AST_Function *fn = malloc(sizeof(AST_Function));
+    ASTFunction *fn = malloc(sizeof(ASTFunction));
     fn->details.line = current->line_number;
     fn->details.start = current->col_number;
     while (current != NULL) {
@@ -88,7 +88,7 @@ AST_Function *parse_function(Token **start) {
             case IDENTIFIER:
                 if (states[pos].klass != current->klass)
                     fail(current, "Unexpected token");
-                fn->identifier = malloc(sizeof(AST_Identifier));
+                fn->identifier = malloc(sizeof(ASTIdentifier));
                 fn->identifier->name = current->value;
                 fn->identifier->details.line = current->line_number;
                 fn->identifier->details.start = current->col_number;
@@ -119,8 +119,8 @@ AST_Function *parse_function(Token **start) {
     return NULL;
 }
 
-AST_Program *parse(Token **start) {
-    AST_Program *program = (AST_Program*)malloc(sizeof(AST_Program));
+ASTProgram *ASTParse(Token **start) {
+    ASTProgram *program = (ASTProgram*)malloc(sizeof(ASTProgram));
     Token *current = *start;
     while (current != NULL) {
         if (current->klass == KEYWORD) {

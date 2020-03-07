@@ -6,6 +6,6 @@
 #include <stdio.h>
 #include "parser.h"
 
-void generate(AST_Program *program, FILE *output);
+void generate(ASTProgram *program, FILE *output);
 
 #endif /* generater_h */

@@ -37,7 +37,7 @@ int main(int argc, char* argv[]) {
         start = start->next;
     }
     debug("Parsing...");
-    AST_Program *program = parse(&head);
+    ASTProgram *program = ASTParse(&head);
     if (program == NULL) {
         debug("Error: Could not parse.");
         return 11;
