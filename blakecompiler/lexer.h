@@ -39,6 +39,8 @@ typedef enum _keyword_type {
 
 typedef struct _token {
     char *value;
+    uint32_t line_number;
+    uint32_t col_number;
     TokenClass klass;
     union {
         OpType op;

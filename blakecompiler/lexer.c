@@ -9,10 +9,10 @@
 #include "keywords.h"
 #include "debug.h"
 
-char take_next(FILE *input, char *buffer, uint *index);
+char take_next(FILE *input, char *buffer, uint32_t *index);
 char peek_next(FILE *input);
 
-void emit_token(Token **current, char *buffer, uint *index, TokenClass name);
+void emit_token(Token **current, char *buffer, uint32_t *index, uint32_t line, uint32_t character, TokenClass name);
 
 bool is_number(char c);
 bool is_letter(char c);
@@ -20,6 +20,9 @@ bool is_lowercase(char c);
 bool is_uppercase(char c);
 bool is_whitespace(char c);
 bool is_identifier_character(char c);
+
+static uint32_t line_number = 1;
+static uint32_t col_number = 1;
 
 Token *lex(char *filename) {
     FILE *input = fopen(filename, "r");
@@ -33,6 +36,10 @@ Token *lex(char *filename) {
     TokenClass token_class = UNDEFINED_TOKEN;
 //    TokenName token_name = OPERATOR_DIVISOR;
     while ((c = take_next(input, buffer, &index)) != EOF) {
+        if (c == '\n') {
+            line_number++;
+            col_number = 1;
+        }
         token_class = UNDEFINED_TOKEN;
         if (c == '/') {
             if (peek_next(input) == '/') {
@@ -113,15 +120,16 @@ Token *lex(char *filename) {
             free(value);
         }
         if (token_class != UNDEFINED_TOKEN)
-            emit_token(&head, buffer, &index, token_class);
+            emit_token(&head, buffer, &index, line_number, col_number, token_class);
         index = 0;
     }
     fclose(input);
     return tail->next;
 }
 
-char take_next(FILE *input, char buffer[], uint *index) {
+char take_next(FILE *input, char buffer[], uint32_t *index) {
     buffer[*index] = fgetc(input);
+    col_number++;
     (*index)++;
     if (*index > 240)
         abort(); // buffer overflow
@@ -135,8 +143,10 @@ char peek_next(FILE *input) {
 }
 
 // TODO: RESET BUFFER INDEX when passing buffer instead of value.
-void emit_token(Token **current, char *buffer, uint *index, TokenClass name) {
+void emit_token(Token **current, char *buffer, uint32_t *index, uint32_t line, uint32_t character, TokenClass name) {
     Token *tmp = (Token *)calloc(1, sizeof(Token));
+    tmp->line_number = line;
+    tmp->col_number = character - *index;
     tmp->value = (char *)malloc((*index + 1)* sizeof(char));
     strncpy(tmp->value, buffer, *index);
     tmp->value[*index] = '\0';
@@ -148,7 +158,7 @@ void emit_token(Token **current, char *buffer, uint *index, TokenClass name) {
 
 
 void print_debug(Token *token) {
-    debug("%15s | %s", friendly_token_name(token), token->value);
+    debug("Ln %2d, Col %2d | %12s | %s ", token->line_number, token->col_number, friendly_token_name(token), token->value);
 }
 
 const char *friendly_token_name(Token *token) {
