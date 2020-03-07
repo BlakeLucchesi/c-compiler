@@ -36,14 +36,22 @@ int main(int argc, char* argv[]) {
         print_debug(start);
         start = start->next;
     }
+    debug("\n---");
     debug("Parsing...");
     ASTProgram *program = ASTParse(&head);
-    if (program == NULL) {
+    ASTError *error = ASTGetErrors();
+    
+    if (error != NULL) {
         debug("Error: Could not parse.");
+        while (error != NULL) {
+            ASTPrintError(error);
+            error = error->next;
+        }
         return 11;
     }
+
+    debug("\n---");
     debug("Generating Output");
-    
     char *assembly_file_name = malloc(strlen(argv[1]));
     strcpy(assembly_file_name, argv[1]);
     assembly_file_name[strlen(assembly_file_name) - 1] = 's';

@@ -6,7 +6,8 @@
 #include "parser.h"
 #include "debug.h"
 
-void fail(Token *token, char *message);
+void ASTReportError(Token *token, char *message);
+static ASTError *_ASTErrors;
 
 ASTExpression *parse_expression(Token **start) {
     ASTExpression *expression = (ASTExpression*)calloc(1, sizeof(ASTExpression));
@@ -25,7 +26,8 @@ ASTExpression *parse_expression(Token **start) {
                     return expression;
                 }
                 default:
-                    fail(current, "Unsupported operator");
+                    ASTReportError(current, "Unsupported operator");
+                    return NULL;
             }
         }
         case LITERAL: {
@@ -34,7 +36,7 @@ ASTExpression *parse_expression(Token **start) {
             return expression;
         }
         default:
-            fail(current, "Expression expecting either an operator or literal");
+            ASTReportError(current, "Expression expecting either an operator or literal");
             return NULL;
     }
 }
@@ -43,7 +45,8 @@ ASTStatement *parse_statement(Token **start) {
     ASTStatement *statement = (ASTStatement*)malloc(sizeof(ASTStatement));
     Token *current = *start;
     if (current->klass != KEYWORD && strcmp(current->value, "return") != 0) {
-        fail(current, "Statement must begin with return keyword");
+        ASTReportError(current, "Statement must begin with return keyword");
+        return NULL;
     }
     current = current->next;
     statement->expression = parse_expression(&current);
@@ -52,7 +55,7 @@ ASTStatement *parse_statement(Token **start) {
         *start = current;
         return statement;
     }
-    fail(current, "Missing semicolon at end of statement");
+    ASTReportError(current, "Missing semicolon at end of statement");
     return NULL;
 }
 
@@ -71,23 +74,33 @@ ASTFunction *parse_function(Token **start) {
     fn->details.line = current->line_number;
     fn->details.start = current->col_number;
     while (current != NULL) {
+        if (pos == 6)
+            return NULL;
         switch (current->klass) {
             case SEPARATOR:
-                if (states[pos].klass != current->klass && states[pos].sep != current->sep)
-                    fail(current, "Invalid token in function definition");
+                if (states[pos].klass != current->klass && states[pos].sep != current->sep) {
+                    ASTReportError(current, "Invalid token in function definition");
+                    return NULL;
+                }
                 current = current->next;
                 pos++;
                 if (states[pos].sep == SEP_BRACE_CLOSE) {
                     fn->statement = parse_statement(&current);
+                    if (fn->statement == NULL) {
+                        return NULL;
+                    }
+                    break;
                 }
-                else if (pos == 6) {
+                else if (states[pos].sep == SEP_BRACE_CLOSE) {
                     *start = current;
                     return fn;
                 }
                 break;
             case IDENTIFIER:
-                if (states[pos].klass != current->klass)
-                    fail(current, "Unexpected token");
+                if (states[pos].klass != current->klass) {
+                    ASTReportError(current, "Unexpected token");
+                    return NULL;
+                }
                 fn->identifier = malloc(sizeof(ASTIdentifier));
                 fn->identifier->name = current->value;
                 fn->identifier->details.line = current->line_number;
@@ -96,10 +109,14 @@ ASTFunction *parse_function(Token **start) {
                 pos++;
                 break;
             case KEYWORD:
-                if (states[pos].klass != current->klass)
-                    fail(current, "Unexpected token");
-                if (current->key != KEYWORD_RETURN)
-                    fail(current, "Expected return keyword");
+                if (states[pos].klass != current->klass) {
+                    ASTReportError(current, "Unexpected token");
+                    return NULL;
+                }
+                if (current->key != KEYWORD_RETURN) {
+                    ASTReportError(current, "Expected return keyword");
+                    return NULL;
+                }
                 // TODO capture return type.
                 current = current->next;
                 pos++;
@@ -111,11 +128,11 @@ ASTFunction *parse_function(Token **start) {
             case UNDEFINED_TOKEN:
             case OPERATOR:
             case LITERAL:
-                fail(current, "Unexpected token");
-                break;
+                ASTReportError(current, "Unexpected token");
+                return NULL;
         }
     }
-    fail(current, "Could not parse function");
+    ASTReportError(current, "Could not parse function");
     return NULL;
 }
 
@@ -125,24 +142,46 @@ ASTProgram *ASTParse(Token **start) {
     while (current != NULL) {
         if (current->klass == KEYWORD) {
             program->function = parse_function(&current);
+            if (program->function == NULL) {
+                return NULL;
+            }
         }
         else if (current->klass == COMMENT) {
             current = current->next;
         }
         else {
-            fail(current, "Unexpected token");
+            ASTReportError(current, "Unexpected token");
+            return NULL;
         }
     }
     *start = current;
     return program;
 }
 
-void fail(Token *token, char *message) {
-    if (token == NULL) {
-        debug("Failed parsing. %s. Token NULL.", message);
+void ASTReportError(Token *token, char *message) {
+    static ASTError *errorTail;
+    ASTError *error = (ASTError*)calloc(1, sizeof(ASTError));
+    error->message = message;
+    error->token = token;
+    if (_ASTErrors == NULL) {
+        _ASTErrors = error;
+        errorTail = error;
     }
     else {
-        debug("Failed parsing. %s. Found token %s on ln %d, col %d", message, token->value, token->line_number, token->col_number);
+        errorTail->next = error;
+        errorTail = error;
     }
-    exit(EXIT_FAILURE);
+}
+
+ASTError *ASTGetErrors(void) {
+    return _ASTErrors;
+}
+
+void ASTPrintError(ASTError *error) {
+    if (error->token == NULL) {
+        debug("Failed parsing. %s. Token NULL.", error->message);
+    }
+    else {
+        debug("Failed parsing. %s. Found token %s on ln %d, col %d", error->message, error->token->value, error->token->line_number, error->token->col_number);
+    }
 }
