@@ -29,6 +29,12 @@ typedef struct _ast_expression {
     ASTDetails details;
 } ASTExpression;
 
+typedef struct _ast_binary_operator {
+    char *value;
+    ASTExpression *expression_left;
+    ASTExpression *expression_right;
+} ASTBinaryOperator;
+
 typedef struct _ast_return {
     ASTExpression *expression;
     ASTDetails details;
