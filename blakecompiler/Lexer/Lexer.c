@@ -113,11 +113,9 @@ Token *Lex(LexerState *state) {
             while (is_identifier_character(peek_next(state))) {
                 take_next(state);
             }
-            char *value = malloc(sizeof(char) * (state->index + 1));
-            strncpy(value, state->buffer, state->index); // TODO: do we need to copy?
-            token_class = is_keyword(value) || is_type(value) ? KEYWORD : IDENTIFIER;
+            state->buffer[state->index] = '\0';
+            token_class = is_keyword(state->buffer) || is_type(state->buffer) ? KEYWORD : IDENTIFIER;
             token_name = KEYWORD_RETURN;
-            free(value);
         }
         if (token_class != UNDEFINED_TOKEN)
             emit_token(state, token_class, token_name);
