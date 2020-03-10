@@ -44,9 +44,6 @@ typedef struct _token {
     struct _token *next;
 } Token;
 
-
-
-
 typedef struct _lex_state {
     FILE *input;
     char buffer[240];
@@ -55,12 +52,12 @@ typedef struct _lex_state {
     uint index;
     uint line_number;
     uint col_number;
-} LexerState;
+} Lexer;
 
 //extern LexerState _lex_state;
 
-LexerState *MakeLexer(void);
-Token *Lex(LexerState *state);
+Lexer *MakeLexer(void);
+Token *Lex(Lexer *state);
 
 void print_debug(Token *token);
 const char *friendly_token_name(Token *token);

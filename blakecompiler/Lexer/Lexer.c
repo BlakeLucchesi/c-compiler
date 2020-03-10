@@ -10,13 +10,13 @@
 #include "Keywords.h"
 #include "Debug.h"
 
-char take_next(LexerState *state);
-char peek_next(LexerState *state);
-void emit_token(LexerState *state, TokenClass klass, TokenName name);
+char take_next(Lexer *state);
+char peek_next(Lexer *state);
+void emit_token(Lexer *state, TokenClass klass, TokenName name);
 
 
-LexerState *MakeLexer() {
-    LexerState *state = calloc(1, sizeof(LexerState));
+Lexer *MakeLexer() {
+    Lexer *state = calloc(1, sizeof(Lexer));
     state->head = (Token *)calloc(1, sizeof(Token));
     state->tail = state->head;
     state->index = 0;
@@ -25,7 +25,7 @@ LexerState *MakeLexer() {
     return state;
 }
 
-Token *Lex(LexerState *state) {
+Token *Lex(Lexer *state) {
     char c;
     TokenClass token_class = UNDEFINED_TOKEN;
     TokenName token_name = UNDEFINED_TOKEN_NAME;
@@ -125,7 +125,7 @@ Token *Lex(LexerState *state) {
     return state->tail->next;
 }
 
-char take_next(LexerState *state) {
+char take_next(Lexer *state) {
     state->buffer[state->index] = fgetc(state->input);
     state->col_number++;
     state->index++;
@@ -134,13 +134,13 @@ char take_next(LexerState *state) {
     return state->buffer[state->index - 1];
 }
     
-char peek_next(LexerState *state) {
+char peek_next(Lexer *state) {
     char next = fgetc(state->input);
     fseek(state->input, -1, SEEK_CUR);
     return next;
 }
 
-void emit_token(LexerState *state, TokenClass klass, TokenName name) {
+void emit_token(Lexer *state, TokenClass klass, TokenName name) {
     Token *tmp = (Token *)calloc(1, sizeof(Token));
     tmp->line_number = state->line_number;
     tmp->col_number = state->col_number - state->index;
