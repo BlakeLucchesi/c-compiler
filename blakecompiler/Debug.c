@@ -1,5 +1,5 @@
 //  Copyright © 2020 Blake Lucchesi. All rights reserved.
 
-#include "debug.h"
+#include "Debug.h"
 
 int LOGS_ENABLED;

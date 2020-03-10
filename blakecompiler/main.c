@@ -8,9 +8,9 @@
 // #include <stdlib.h>
 
 #include "Lexer.h"
-#include "parser.h"
-#include "generater.h"
-#include "debug.h"
+#include "Parser.h"
+#include "Generater.h"
+#include "Debug.h"
 
 int main(int argc, char* argv[]) {
 

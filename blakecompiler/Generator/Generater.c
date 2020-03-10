@@ -1,7 +1,7 @@
 //  Copyright © 2020 Blake Lucchesi. All rights reserved.
 
-#include "generater.h"
-#include "debug.h"
+#include "Generater.h"
+#include "Debug.h"
 
 void process_function(ASTFunction *function, FILE *output);
 void process_statement(ASTStatement *statement, FILE *output);

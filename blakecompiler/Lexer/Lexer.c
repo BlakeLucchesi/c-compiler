@@ -7,8 +7,8 @@
 
 #include "Lexer.h"
 #include "LexerMatchers.h"
-#include "keywords.h"
-#include "debug.h"
+#include "Keywords.h"
+#include "Debug.h"
 
 char take_next(LexerState *state);
 char peek_next(LexerState *state);

@@ -3,8 +3,8 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "parser.h"
-#include "debug.h"
+#include "Parser.h"
+#include "Debug.h"
 
 void ASTReportError(Token *token, char *message);
 static ASTError *_ASTErrors;

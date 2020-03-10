@@ -1,7 +1,7 @@
 //  Copyright © 2020 Blake Lucchesi. All rights reserved.
 #include <string.h>
 
-#include "keywords.h"
+#include "Keywords.h"
 
 size_t is_keyword(char *input) {
     int keyword_count = 3;

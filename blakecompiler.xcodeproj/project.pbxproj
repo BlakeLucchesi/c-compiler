@@ -7,13 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		5D5989C723FC85E0007C402A /* debug.c in Sources */ = {isa = PBXBuildFile; fileRef = 5D5989C623FC85E0007C402A /* debug.c */; };
-		5D638CD423F6156E009F6476 /* generater.c in Sources */ = {isa = PBXBuildFile; fileRef = 5D638CD323F6156E009F6476 /* generater.c */; };
+		5D5989C723FC85E0007C402A /* Debug.c in Sources */ = {isa = PBXBuildFile; fileRef = 5D5989C623FC85E0007C402A /* Debug.c */; };
+		5D638CD423F6156E009F6476 /* Generater.c in Sources */ = {isa = PBXBuildFile; fileRef = 5D638CD323F6156E009F6476 /* Generater.c */; };
 		5D80678323EA89660041EA5E /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 5D80678223EA89660041EA5E /* main.c */; };
 		5D80678E23EA89990041EA5E /* Lexer.c in Sources */ = {isa = PBXBuildFile; fileRef = 5D80678923EA89990041EA5E /* Lexer.c */; };
 		5DC338E724180DC9009A31C8 /* LexerMatchers.c in Sources */ = {isa = PBXBuildFile; fileRef = 5DC338E624180DC9009A31C8 /* LexerMatchers.c */; };
-		5DEB8B5223EC9DB50018CFF5 /* keywords.c in Sources */ = {isa = PBXBuildFile; fileRef = 5DEB8B5123EC9DB50018CFF5 /* keywords.c */; };
-		5DEB8B5523EE387E0018CFF5 /* parser.c in Sources */ = {isa = PBXBuildFile; fileRef = 5DEB8B5423EE387E0018CFF5 /* parser.c */; };
+		5DEB8B5223EC9DB50018CFF5 /* Keywords.c in Sources */ = {isa = PBXBuildFile; fileRef = 5DEB8B5123EC9DB50018CFF5 /* Keywords.c */; };
+		5DEB8B5523EE387E0018CFF5 /* Parser.c in Sources */ = {isa = PBXBuildFile; fileRef = 5DEB8B5423EE387E0018CFF5 /* Parser.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -29,10 +29,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		5D5989BA23FA6AFA007C402A /* debug.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = debug.h; sourceTree = "<group>"; };
-		5D5989C623FC85E0007C402A /* debug.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = debug.c; sourceTree = "<group>"; };
-		5D638CD223F6156E009F6476 /* generater.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = generater.h; sourceTree = "<group>"; };
-		5D638CD323F6156E009F6476 /* generater.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = generater.c; sourceTree = "<group>"; };
+		5D5989BA23FA6AFA007C402A /* Debug.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Debug.h; sourceTree = "<group>"; };
+		5D5989C623FC85E0007C402A /* Debug.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = Debug.c; sourceTree = "<group>"; };
+		5D638CD223F6156E009F6476 /* Generater.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Generater.h; sourceTree = "<group>"; };
+		5D638CD323F6156E009F6476 /* Generater.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = Generater.c; sourceTree = "<group>"; };
 		5D80677F23EA89660041EA5E /* blakecompiler */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = blakecompiler; sourceTree = BUILT_PRODUCTS_DIR; };
 		5D80678223EA89660041EA5E /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 		5D80678923EA89990041EA5E /* Lexer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Lexer.c; sourceTree = "<group>"; };
@@ -41,10 +41,10 @@
 		5DB2489523EB637100551FD7 /* stage0.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = stage0.c; sourceTree = "<group>"; };
 		5DC338E524180DC9009A31C8 /* LexerMatchers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LexerMatchers.h; sourceTree = "<group>"; };
 		5DC338E624180DC9009A31C8 /* LexerMatchers.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = LexerMatchers.c; sourceTree = "<group>"; };
-		5DEB8B5023EC9DB50018CFF5 /* keywords.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = keywords.h; sourceTree = "<group>"; };
-		5DEB8B5123EC9DB50018CFF5 /* keywords.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = keywords.c; sourceTree = "<group>"; };
-		5DEB8B5323EE387E0018CFF5 /* parser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = parser.h; sourceTree = "<group>"; };
-		5DEB8B5423EE387E0018CFF5 /* parser.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = parser.c; sourceTree = "<group>"; };
+		5DEB8B5023EC9DB50018CFF5 /* Keywords.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Keywords.h; sourceTree = "<group>"; };
+		5DEB8B5123EC9DB50018CFF5 /* Keywords.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = Keywords.c; sourceTree = "<group>"; };
+		5DEB8B5323EE387E0018CFF5 /* Parser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Parser.h; sourceTree = "<group>"; };
+		5DEB8B5423EE387E0018CFF5 /* Parser.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = Parser.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,18 +77,13 @@
 		5D80678123EA89660041EA5E /* blakecompiler */ = {
 			isa = PBXGroup;
 			children = (
-				5DC338E824180F02009A31C8 /* Parser */,
+				5D5989C623FC85E0007C402A /* Debug.c */,
+				5D5989BA23FA6AFA007C402A /* Debug.h */,
+				5DC338E924180F78009A31C8 /* Generator */,
 				5DC338E424180D80009A31C8 /* Lexer */,
-				5DB2489323EB635800551FD7 /* Test Inputs */,
 				5D80678223EA89660041EA5E /* main.c */,
-				5DEB8B5023EC9DB50018CFF5 /* keywords.h */,
-				5DEB8B5123EC9DB50018CFF5 /* keywords.c */,
-				5DEB8B5323EE387E0018CFF5 /* parser.h */,
-				5DEB8B5423EE387E0018CFF5 /* parser.c */,
-				5D638CD223F6156E009F6476 /* generater.h */,
-				5D638CD323F6156E009F6476 /* generater.c */,
-				5D5989BA23FA6AFA007C402A /* debug.h */,
-				5D5989C623FC85E0007C402A /* debug.c */,
+				5DC338E824180F02009A31C8 /* Parser */,
+				5DB2489323EB635800551FD7 /* Test Inputs */,
 			);
 			path = blakecompiler;
 			sourceTree = "<group>";
@@ -106,10 +101,12 @@
 		5DC338E424180D80009A31C8 /* Lexer */ = {
 			isa = PBXGroup;
 			children = (
+				5DEB8B5123EC9DB50018CFF5 /* Keywords.c */,
+				5DEB8B5023EC9DB50018CFF5 /* Keywords.h */,
 				5D80678923EA89990041EA5E /* Lexer.c */,
 				5D80678D23EA89990041EA5E /* Lexer.h */,
-				5DC338E524180DC9009A31C8 /* LexerMatchers.h */,
 				5DC338E624180DC9009A31C8 /* LexerMatchers.c */,
+				5DC338E524180DC9009A31C8 /* LexerMatchers.h */,
 			);
 			path = Lexer;
 			sourceTree = "<group>";
@@ -117,8 +114,19 @@
 		5DC338E824180F02009A31C8 /* Parser */ = {
 			isa = PBXGroup;
 			children = (
+				5DEB8B5423EE387E0018CFF5 /* Parser.c */,
+				5DEB8B5323EE387E0018CFF5 /* Parser.h */,
 			);
 			path = Parser;
+			sourceTree = "<group>";
+		};
+		5DC338E924180F78009A31C8 /* Generator */ = {
+			isa = PBXGroup;
+			children = (
+				5D638CD323F6156E009F6476 /* Generater.c */,
+				5D638CD223F6156E009F6476 /* Generater.h */,
+			);
+			path = Generator;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -179,11 +187,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				5D80678E23EA89990041EA5E /* Lexer.c in Sources */,
-				5DEB8B5223EC9DB50018CFF5 /* keywords.c in Sources */,
+				5DEB8B5223EC9DB50018CFF5 /* Keywords.c in Sources */,
 				5DC338E724180DC9009A31C8 /* LexerMatchers.c in Sources */,
-				5D638CD423F6156E009F6476 /* generater.c in Sources */,
-				5D5989C723FC85E0007C402A /* debug.c in Sources */,
-				5DEB8B5523EE387E0018CFF5 /* parser.c in Sources */,
+				5D638CD423F6156E009F6476 /* Generater.c in Sources */,
+				5D5989C723FC85E0007C402A /* Debug.c in Sources */,
+				5DEB8B5523EE387E0018CFF5 /* Parser.c in Sources */,
 				5D80678323EA89660041EA5E /* main.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
