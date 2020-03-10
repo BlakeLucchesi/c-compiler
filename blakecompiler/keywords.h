@@ -5,10 +5,13 @@
 
 #include <stdio.h>
 #include <stdbool.h>
+#include "Lexer.h"
 
-static const char *KEYWORDS[] = {"if", "else", "return"};
+static const char *KEYWORDS[] = {"", "if", "else", "return"};
+static const TokenName KEYWORD_TOKEN[] = {UNDEFINED_TOKEN_NAME, KEYWORD_IF, KEYWORD_ELSE, KEYWORD_RETURN};
+
 static const char *TYPES[] = {"int", "char"};
-bool is_keyword(char *input);
+size_t is_keyword(char *input);
 bool is_type(char *input);
 
 #endif /* keywords_h */

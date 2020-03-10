@@ -7,7 +7,7 @@
 #include <errno.h>
 // #include <stdlib.h>
 
-#include "lexer.h"
+#include "Lexer.h"
 #include "parser.h"
 #include "generater.h"
 #include "debug.h"
@@ -26,7 +26,10 @@ int main(int argc, char* argv[]) {
     debug("Compiling %s", argv[1]);
    
     debug("Lexing...");
-    Token *start = lex(argv[1]);
+    LexerState *state = MakeLexer();
+    state->input = fopen(argv[1], "r");
+
+    Token *start = Lex(state);
     Token *head = start;
     if (start->value == '\0') {
         debug("Error: Could not perform lexing.");

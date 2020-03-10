@@ -13,45 +13,54 @@ typedef enum _token_class {
     COMMENT,
 } TokenClass;
 
-typedef enum _operator_type {
+
+typedef enum _token_name {
+    UNDEFINED_TOKEN_NAME,
     OP_NEGATION,
     OP_LOGICAL_NEGATION,
     OP_BITWISE_COMPLEMENT,
+    OP_BITWISE_AND,
+    OP_BITWISE_OR,
     OP_ADDITION,
     OP_MULTIPLICATION,
     OP_DIVISOR,
-} OpType;
-
-typedef enum _separator_type {
     SEP_SEMICOLON,
     SEP_PAREN_OPEN,
     SEP_PAREN_CLOSE,
     SEP_BRACE_OPEN,
     SEP_BRACE_CLOSE,
-} SepType;
-
-typedef enum _keyword_type {
     KEYWORD_RETURN,
     KEYWORD_IF,
     KEYWORD_ELSE,
     KEYWORD_INT,
-} KeywordType;
+} TokenName;
 
 typedef struct _token {
     char *value;
     uint32_t line_number;
     uint32_t col_number;
     TokenClass klass;
-    union {
-        OpType op;
-        SepType sep;
-        KeywordType key;
-    };
+    TokenName name;
     struct _token *next;
 } Token;
 
 
-Token *lex(char *input);
+
+
+typedef struct _lex_state {
+    FILE *input;
+    char buffer[240];
+    Token *head;
+    Token *tail;
+    uint index;
+    uint line_number;
+    uint col_number;
+} LexerState;
+
+//extern LexerState _lex_state;
+
+LexerState *MakeLexer(void);
+Token *Lex(LexerState *state);
 
 void print_debug(Token *token);
 const char *friendly_token_name(Token *token);

@@ -3,15 +3,15 @@
 
 #include "keywords.h"
 
-bool is_keyword(char *input) {
+size_t is_keyword(char *input) {
     int keyword_count = 3;
     while (keyword_count > 0) {
         if (strcmp(input, KEYWORDS[keyword_count - 1]) == 0) {
-            return true;
+            return KEYWORD_TOKEN[keyword_count - 1];
         }
         keyword_count--;
     }
-    return false;
+    return UNDEFINED_TOKEN_NAME;
 }
 
 bool is_type(char *input) {

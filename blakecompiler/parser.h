@@ -4,7 +4,7 @@
 #define parser_h
 
 #include <stdio.h>
-#include "lexer.h"
+#include "Lexer.h"
 
 // Details about each item in the tree used for error reporting
 typedef struct _ast_details {

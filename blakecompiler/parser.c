@@ -14,7 +14,7 @@ ASTExpression *parse_expression(Token **start) {
     Token *current = *start;
     switch (current->klass) {
         case OPERATOR: {
-            switch (current->op) {
+            switch (current->name) {
                 case OP_LOGICAL_NEGATION:
                 case OP_NEGATION:
                 case OP_BITWISE_COMPLEMENT: {
@@ -59,48 +59,76 @@ ASTStatement *parse_statement(Token **start) {
     return NULL;
 }
 
+static int checkState(Token *current) {
+    static int pos = 0;
+    if (pos == 6)
+        return 0;
+    Token states[6] = {
+        { .klass = KEYWORD, .name = KEYWORD_RETURN },
+        { .klass = IDENTIFIER, .name = 0 },
+        { .klass = SEPARATOR, .name = SEP_PAREN_OPEN },
+        { .klass = SEPARATOR, .name = SEP_PAREN_CLOSE },
+        { .klass = SEPARATOR, .name = SEP_BRACE_OPEN },
+        { .klass = SEPARATOR, .name = SEP_BRACE_CLOSE },
+    };
+    if (states[pos].klass != current->klass && states[pos].name != current->name) {
+        ASTReportError(current, "Invalid token in function definition");
+        return 0;
+    }
+    pos++;
+    return 1;
+}
+
+
+
 ASTFunction *parse_function(Token **start) {
     Token *current = *start;
     uint pos = 0;
     Token states[6] = {
-        { .klass = KEYWORD, .key = KEYWORD_RETURN },
-        { .klass = IDENTIFIER },
-        { .klass = SEPARATOR, .sep = SEP_PAREN_OPEN },
-        { .klass = SEPARATOR, .sep = SEP_PAREN_CLOSE },
-        { .klass = SEPARATOR, .sep = SEP_BRACE_OPEN },
-        { .klass = SEPARATOR, .sep = SEP_BRACE_CLOSE },
+        { .klass = KEYWORD, .name = KEYWORD_RETURN },
+        { .klass = IDENTIFIER, .name = 0 },
+        { .klass = SEPARATOR, .name = SEP_PAREN_OPEN },
+        { .klass = SEPARATOR, .name = SEP_PAREN_CLOSE },
+        { .klass = SEPARATOR, .name = SEP_BRACE_OPEN },
+        { .klass = SEPARATOR, .name = SEP_BRACE_CLOSE },
     };
     ASTFunction *fn = malloc(sizeof(ASTFunction));
     fn->details.line = current->line_number;
     fn->details.start = current->col_number;
     while (current != NULL) {
-        if (pos == 6)
+        if (!checkState(current))
             return NULL;
         switch (current->klass) {
             case SEPARATOR:
-                if (states[pos].klass != current->klass && states[pos].sep != current->sep) {
-                    ASTReportError(current, "Invalid token in function definition");
-                    return NULL;
-                }
-                current = current->next;
-                pos++;
-                if (states[pos].sep == SEP_BRACE_CLOSE) {
+//                if (states[pos].klass != current->klass && states[pos].sep != current->sep) {
+//                    ASTReportError(current, "Invalid token in function definition");
+//                    return NULL;
+//                }
+                if (states[pos].name == SEP_BRACE_OPEN) {
+                    current = current->next;
+                    pos++;
                     fn->statement = parse_statement(&current);
                     if (fn->statement == NULL) {
                         return NULL;
                     }
                     break;
                 }
-                else if (states[pos].sep == SEP_BRACE_CLOSE) {
+                else if (states[pos].name == SEP_BRACE_CLOSE) {
+                    current = current->next;
+                    pos++;
                     *start = current;
                     return fn;
                 }
+                else {
+                    current = current->next;
+                    pos++;
+                }
                 break;
             case IDENTIFIER:
-                if (states[pos].klass != current->klass) {
-                    ASTReportError(current, "Unexpected token");
-                    return NULL;
-                }
+//                if (states[pos].klass != current->klass) {
+//                    ASTReportError(current, "Unexpected token");
+//                    return NULL;
+//                }
                 fn->identifier = malloc(sizeof(ASTIdentifier));
                 fn->identifier->name = current->value;
                 fn->identifier->details.line = current->line_number;
@@ -109,14 +137,14 @@ ASTFunction *parse_function(Token **start) {
                 pos++;
                 break;
             case KEYWORD:
-                if (states[pos].klass != current->klass) {
-                    ASTReportError(current, "Unexpected token");
-                    return NULL;
-                }
-                if (current->key != KEYWORD_RETURN) {
-                    ASTReportError(current, "Expected return keyword");
-                    return NULL;
-                }
+//                if (states[pos].klass != current->klass) {
+//                    ASTReportError(current, "Unexpected token");
+//                    return NULL;
+//                }
+//                if (current->key != KEYWORD_RETURN) {
+//                    ASTReportError(current, "Expected return keyword");
+//                    return NULL;
+//                }
                 // TODO capture return type.
                 current = current->next;
                 pos++;
