@@ -10,38 +10,38 @@
 #include "Keywords.h"
 #include "Debug.h"
 
-char take_next(Lexer *state);
-char peek_next(Lexer *state);
-void emit_token(Lexer *state, TokenClass klass, TokenName name);
+char take_next(Lexer *lexer);
+char peek_next(Lexer *lexer);
+void emit_token(Lexer *lexer, TokenClass klass, TokenName name);
 
-
-Lexer *MakeLexer() {
-    Lexer *state = calloc(1, sizeof(Lexer));
-    state->head = (Token *)calloc(1, sizeof(Token));
-    state->tail = state->head;
-    state->index = 0;
-    state->line_number = 1;
-    state->col_number = 1;
-    return state;
+Lexer *CreateLexer() {
+    Lexer *lexer = calloc(1, sizeof(Lexer));
+    lexer->head = (Token *)calloc(1, sizeof(Token));
+    lexer->start = lexer->head;
+    lexer->index = 0;
+    lexer->line_number = 1;
+    lexer->col_number = 1;
+    return lexer;
 }
 
-Token *Lex(Lexer *state) {
+void Lex(Lexer *lexer) {
     char c;
     TokenClass token_class = UNDEFINED_TOKEN;
     TokenName token_name = UNDEFINED_TOKEN_NAME;
-    while ((c = take_next(state)) != EOF) {
+    while ((c = take_next(lexer)) != EOF) {
         token_class = UNDEFINED_TOKEN;
         token_name = UNDEFINED_TOKEN_NAME;
         if (c == '\n') {
-            state->line_number++;
-            state->col_number = 1;
+            lexer->line_number++;
+            lexer->col_number = 1;
         }
         if (c == '/') {
-            if (peek_next(state) == '/') {
-                while (peek_next(state) != '\n') {
-                    take_next(state);
+            if (peek_next(lexer) == '/') {
+                while (peek_next(lexer) != '\n') {
+                    take_next(lexer);
                 }
                 token_class = COMMENT;
+//                token_name = ;
             }
             else {
                 token_class = OPERATOR;
@@ -69,10 +69,10 @@ Token *Lex(Lexer *state) {
             token_name = SEP_PAREN_CLOSE;
         }
         else if (c == '+') {
-            if (peek_next(state) == '+') {
-                take_next(state);
+            if (peek_next(lexer) == '+') {
+                take_next(lexer);
                 token_class = OPERATOR;
-                // token_name;
+//                 token_name = ;
             }
             else {
                 token_class = OPERATOR;
@@ -104,54 +104,52 @@ Token *Lex(Lexer *state) {
             token_name = OP_BITWISE_COMPLEMENT;
         }
         else if (is_number(c)) {
-            while (is_number(peek_next(state))) {
-                take_next(state);
+            while (is_number(peek_next(lexer))) {
+                take_next(lexer);
             }
             token_class = LITERAL;
         }
         else if (is_identifier_character(c)) {
-            while (is_identifier_character(peek_next(state))) {
-                take_next(state);
+            while (is_identifier_character(peek_next(lexer))) {
+                take_next(lexer);
             }
-            state->buffer[state->index] = '\0';
-            token_class = is_keyword(state->buffer) || is_type(state->buffer) ? KEYWORD : IDENTIFIER;
+            lexer->buffer[lexer->index] = '\0';
+            token_class = is_keyword(lexer->buffer) || is_type(lexer->buffer) ? KEYWORD : IDENTIFIER;
             token_name = KEYWORD_RETURN;
         }
         if (token_class != UNDEFINED_TOKEN)
-            emit_token(state, token_class, token_name);
-        state->index = 0;
+            emit_token(lexer, token_class, token_name);
+        lexer->index = 0;
     }
-    fclose(state->input);
-    return state->tail->next;
+    // Advance start pointer to first token.
+    lexer->start = lexer->start->next;
 }
 
-char take_next(Lexer *state) {
-    state->buffer[state->index] = fgetc(state->input);
-    state->col_number++;
-    state->index++;
-    if (state->index > 240)
+char take_next(Lexer *lexer) {
+    lexer->buffer[lexer->index] = lexer->take_next(lexer->data);
+    lexer->col_number++;
+    lexer->index++;
+    if (lexer->index > 240)
         abort(); // buffer overflow
-    return state->buffer[state->index - 1];
+    return lexer->buffer[lexer->index - 1];
 }
     
-char peek_next(Lexer *state) {
-    char next = fgetc(state->input);
-    fseek(state->input, -1, SEEK_CUR);
-    return next;
+char peek_next(Lexer *lexer) {
+    return lexer->peek_next(lexer->data);
 }
 
-void emit_token(Lexer *state, TokenClass klass, TokenName name) {
+void emit_token(Lexer *lexer, TokenClass klass, TokenName name) {
     Token *tmp = (Token *)calloc(1, sizeof(Token));
-    tmp->line_number = state->line_number;
-    tmp->col_number = state->col_number - state->index;
-    tmp->value = (char *)malloc((state->index + 1)* sizeof(char));
-    strncpy(tmp->value, state->buffer, state->index);
-    tmp->value[state->index] = '\0';
+    tmp->line_number = lexer->line_number;
+    tmp->col_number = lexer->col_number - lexer->index;
+    tmp->value = (char *)malloc((lexer->index + 1)* sizeof(char));
+    strncpy(tmp->value, lexer->buffer, lexer->index);
+    tmp->value[lexer->index] = '\0';
     tmp->klass = klass;
     tmp->name = name;
-    state->head->next = tmp;
-    state->index = 0;
-    state->head = tmp;
+    lexer->head->next = tmp;
+    lexer->index = 0;
+    lexer->head = tmp;
 }
 
 void print_debug(Token *token) {
@@ -184,7 +182,7 @@ const char *friendly_token_name(Token *token) {
     return "UNKNOWN";
 }
 
-void cleanup(Token *head) {
+void LexerCleanup(Lexer *lexer) {
 //    token *op = head;
 //    while (op != NULL) {
 //        free(op->value);

@@ -68,7 +68,7 @@ typedef struct _ast_program {
     ASTError *errors;
 } ASTProgram;
 
-ASTProgram *ASTParse(Token **start);
+ASTProgram *ASTParse(Token *start);
 ASTError *ASTGetErrors(void);
 void ASTPrintError(ASTError *error);
 

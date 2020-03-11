@@ -7,7 +7,7 @@
 #include <errno.h>
 // #include <stdlib.h>
 
-#include "Lexer.h"
+#include "FileLexer.h"
 #include "Parser.h"
 #include "Generater.h"
 #include "Debug.h"
@@ -21,16 +21,21 @@ int main(int argc, char* argv[]) {
 
     if (argc < 2) {
         debug("You must specify an input file.");
-        return -1;
+        return 1;
     }
-    debug("Compiling %s", argv[1]);
+    FILE *input = fopen(argv[1], "r");
+    if (!input) {
+        debug("Could not open input file %s.", argv[1]);
+        return 1;
+    }
+    debug("Starting to compile %s", argv[1]);
    
-    debug("Lexing...");
-    LexerState *state = MakeLexer();
-    state->input = fopen(argv[1], "r");
-
-    Token *start = Lex(state);
-    Token *head = start;
+    debug("\n--Lexing--");
+    
+    Lexer *lexer = CreateFileLexer(input);
+    Lex(lexer);
+    Token *start = lexer->start;
+    fclose(input);
     if (start->value == '\0') {
         debug("Error: Could not perform lexing.");
         return 10;
@@ -39,9 +44,8 @@ int main(int argc, char* argv[]) {
         print_debug(start);
         start = start->next;
     }
-    debug("\n---");
-    debug("Parsing...");
-    ASTProgram *program = ASTParse(&head);
+    debug("\n--Parsing--");
+    ASTProgram *program = ASTParse(lexer->start);
     ASTError *error = ASTGetErrors();
     
     if (error != NULL) {
@@ -53,8 +57,7 @@ int main(int argc, char* argv[]) {
         return 11;
     }
 
-    debug("\n---");
-    debug("Generating Output");
+    debug("\n--Generating Output--");
     char *assembly_file_name = malloc(strlen(argv[1]));
     strcpy(assembly_file_name, argv[1]);
     assembly_file_name[strlen(assembly_file_name) - 1] = 's';
@@ -62,7 +65,7 @@ int main(int argc, char* argv[]) {
     generate(program, assembly_file);
     fclose(assembly_file);
     
-    debug("Assembling...");
+    debug("\n--Assembling--");
     char *executable_file_name = malloc(strlen(argv[1]));
     strcpy(executable_file_name, argv[1]);
     executable_file_name[strlen(executable_file_name) - 2] = '\0';
@@ -71,22 +74,19 @@ int main(int argc, char* argv[]) {
     int status;
 
     if (pid == 0) {
-        debug("child executing $ gcc %s -o %s", assembly_file_name, executable_file_name);
         int r = execl("/usr/bin/gcc", "gcc", assembly_file_name, "-o", executable_file_name, (char *)0);
         printf("GCC Failed: return:%d. errno:%d\n", r, errno);
         abort();
     }
     else {
-        debug("Parent %d waiting for %d", getpid(), pid);
         waitpid(pid, &status, 0);
-        debug("Child %d exited %d", pid, status);
-        debug("Complete!");
+        debug("\n--Complete!--");
     }
     
-//    remove(assembly_file_name);
+    remove(assembly_file_name);
     free(assembly_file_name);
     free(executable_file_name);
-    cleanup(head);
+    LexerCleanup(lexer);
     return 0;
 }
 

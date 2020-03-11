@@ -2,67 +2,34 @@
 
 #ifndef lexer_h
 #define lexer_h
+#import "Token.h"
 
-typedef enum _token_class {
-    UNDEFINED_TOKEN,
-    OPERATOR,
-    SEPARATOR,
-    IDENTIFIER,
-    KEYWORD,
-    LITERAL,
-    COMMENT,
-} TokenClass;
+typedef char (*take_next_t)(void *data);
+typedef char (*peek_next_t)(void *data);
 
+typedef struct _lexer_state {
+    // Interface for reading data from a provider.
+    take_next_t take_next;
+    peek_next_t peek_next;
+    void *data;
 
-typedef enum _token_name {
-    UNDEFINED_TOKEN_NAME,
-    OP_NEGATION,
-    OP_LOGICAL_NEGATION,
-    OP_BITWISE_COMPLEMENT,
-    OP_BITWISE_AND,
-    OP_BITWISE_OR,
-    OP_ADDITION,
-    OP_MULTIPLICATION,
-    OP_DIVISOR,
-    SEP_SEMICOLON,
-    SEP_PAREN_OPEN,
-    SEP_PAREN_CLOSE,
-    SEP_BRACE_OPEN,
-    SEP_BRACE_CLOSE,
-    KEYWORD_RETURN,
-    KEYWORD_IF,
-    KEYWORD_ELSE,
-    KEYWORD_INT,
-} TokenName;
+    // Public interface
+    Token *start;
 
-typedef struct _token {
-    char *value;
-    uint32_t line_number;
-    uint32_t col_number;
-    TokenClass klass;
-    TokenName name;
-    struct _token *next;
-} Token;
-
-typedef struct _lex_state {
-    FILE *input;
-    char buffer[240];
+    // Internal state for the lexer.
     Token *head;
-    Token *tail;
+    char buffer[240];
     uint index;
     uint line_number;
     uint col_number;
 } Lexer;
 
-//extern LexerState _lex_state;
 
-Lexer *MakeLexer(void);
-Token *Lex(Lexer *state);
+Lexer *CreateLexer(void);
+void Lex(Lexer *lexer);
+void LexerCleanup(Lexer *lexer);
 
 void print_debug(Token *token);
 const char *friendly_token_name(Token *token);
-
-// walks through lexemes and deallocates managed memory.
-void cleanup(Token *head);
 
 #endif

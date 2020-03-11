@@ -164,9 +164,9 @@ ASTFunction *parse_function(Token **start) {
     return NULL;
 }
 
-ASTProgram *ASTParse(Token **start) {
+ASTProgram *ASTParse(Token *start) {
     ASTProgram *program = (ASTProgram*)malloc(sizeof(ASTProgram));
-    Token *current = *start;
+    Token *current = start;
     while (current != NULL) {
         if (current->klass == KEYWORD) {
             program->function = parse_function(&current);
@@ -182,7 +182,6 @@ ASTProgram *ASTParse(Token **start) {
             return NULL;
         }
     }
-    *start = current;
     return program;
 }
 
