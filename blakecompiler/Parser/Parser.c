@@ -44,13 +44,13 @@ ASTExpression *parse_expression(Token **start) {
 ASTStatement *parse_statement(Token **start) {
     ASTStatement *statement = (ASTStatement*)malloc(sizeof(ASTStatement));
     Token *current = *start;
-    if (current->klass != KEYWORD && strcmp(current->value, "return") != 0) {
+    if (current->klass != KEYWORD && current->name != KEYWORD_RETURN) {
         ASTReportError(current, "Statement must begin with return keyword");
         return NULL;
     }
     current = current->next;
     statement->expression = parse_expression(&current);
-    if (current->klass == SEPARATOR && current->value[0] == ';'){
+    if (current->klass == SEPARATOR && current->name == SEP_SEMICOLON){
         current = current->next;
         *start = current;
         return statement;
@@ -100,10 +100,6 @@ ASTFunction *parse_function(Token **start) {
             return NULL;
         switch (current->klass) {
             case SEPARATOR:
-//                if (states[pos].klass != current->klass && states[pos].sep != current->sep) {
-//                    ASTReportError(current, "Invalid token in function definition");
-//                    return NULL;
-//                }
                 if (states[pos].name == SEP_BRACE_OPEN) {
                     current = current->next;
                     pos++;
@@ -125,10 +121,6 @@ ASTFunction *parse_function(Token **start) {
                 }
                 break;
             case IDENTIFIER:
-//                if (states[pos].klass != current->klass) {
-//                    ASTReportError(current, "Unexpected token");
-//                    return NULL;
-//                }
                 fn->identifier = malloc(sizeof(ASTIdentifier));
                 fn->identifier->name = current->value;
                 fn->identifier->details.line = current->line_number;
@@ -137,14 +129,6 @@ ASTFunction *parse_function(Token **start) {
                 pos++;
                 break;
             case KEYWORD:
-//                if (states[pos].klass != current->klass) {
-//                    ASTReportError(current, "Unexpected token");
-//                    return NULL;
-//                }
-//                if (current->key != KEYWORD_RETURN) {
-//                    ASTReportError(current, "Expected return keyword");
-//                    return NULL;
-//                }
                 // TODO capture return type.
                 current = current->next;
                 pos++;
