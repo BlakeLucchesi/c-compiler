@@ -79,8 +79,6 @@ static int checkState(Token *current) {
     return 1;
 }
 
-
-
 ASTFunction *parse_function(Token **start) {
     Token *current = *start;
     uint pos = 0;

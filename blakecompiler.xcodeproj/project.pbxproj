@@ -7,13 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5D2BD55F24195B000017EB3E /* Generator.c in Sources */ = {isa = PBXBuildFile; fileRef = 5D2BD55E24195B000017EB3E /* Generator.c */; };
+		5D2BD56224195BF10017EB3E /* AST.c in Sources */ = {isa = PBXBuildFile; fileRef = 5D2BD56124195BF10017EB3E /* AST.c */; };
 		5D5989C723FC85E0007C402A /* Debug.c in Sources */ = {isa = PBXBuildFile; fileRef = 5D5989C623FC85E0007C402A /* Debug.c */; };
-		5D638CD423F6156E009F6476 /* Generater.c in Sources */ = {isa = PBXBuildFile; fileRef = 5D638CD323F6156E009F6476 /* Generater.c */; };
+		5D638CD423F6156E009F6476 /* GenerateAssembly.c in Sources */ = {isa = PBXBuildFile; fileRef = 5D638CD323F6156E009F6476 /* GenerateAssembly.c */; };
 		5D80678323EA89660041EA5E /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 5D80678223EA89660041EA5E /* main.c */; };
 		5D80678E23EA89990041EA5E /* Lexer.c in Sources */ = {isa = PBXBuildFile; fileRef = 5D80678923EA89990041EA5E /* Lexer.c */; };
 		5DC338E724180DC9009A31C8 /* LexerMatchers.c in Sources */ = {isa = PBXBuildFile; fileRef = 5DC338E624180DC9009A31C8 /* LexerMatchers.c */; };
 		5DC338EC24181A22009A31C8 /* Token.c in Sources */ = {isa = PBXBuildFile; fileRef = 5DC338EB24181A22009A31C8 /* Token.c */; };
 		5DC338EF24181B6A009A31C8 /* FileLexer.c in Sources */ = {isa = PBXBuildFile; fileRef = 5DC338EE24181B6A009A31C8 /* FileLexer.c */; };
+		5DC338F2241959C0009A31C8 /* GenerateASTDebug.c in Sources */ = {isa = PBXBuildFile; fileRef = 5DC338F1241959C0009A31C8 /* GenerateASTDebug.c */; };
 		5DEB8B5223EC9DB50018CFF5 /* Keywords.c in Sources */ = {isa = PBXBuildFile; fileRef = 5DEB8B5123EC9DB50018CFF5 /* Keywords.c */; };
 		5DEB8B5523EE387E0018CFF5 /* Parser.c in Sources */ = {isa = PBXBuildFile; fileRef = 5DEB8B5423EE387E0018CFF5 /* Parser.c */; };
 /* End PBXBuildFile section */
@@ -31,10 +34,14 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		5D2BD55D24195B000017EB3E /* Generator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Generator.h; sourceTree = "<group>"; };
+		5D2BD55E24195B000017EB3E /* Generator.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = Generator.c; sourceTree = "<group>"; };
+		5D2BD56024195BF10017EB3E /* AST.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AST.h; sourceTree = "<group>"; };
+		5D2BD56124195BF10017EB3E /* AST.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = AST.c; sourceTree = "<group>"; };
 		5D5989BA23FA6AFA007C402A /* Debug.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Debug.h; sourceTree = "<group>"; };
 		5D5989C623FC85E0007C402A /* Debug.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = Debug.c; sourceTree = "<group>"; };
-		5D638CD223F6156E009F6476 /* Generater.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Generater.h; sourceTree = "<group>"; };
-		5D638CD323F6156E009F6476 /* Generater.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = Generater.c; sourceTree = "<group>"; };
+		5D638CD223F6156E009F6476 /* GenerateAssembly.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GenerateAssembly.h; sourceTree = "<group>"; };
+		5D638CD323F6156E009F6476 /* GenerateAssembly.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = GenerateAssembly.c; sourceTree = "<group>"; };
 		5D80677F23EA89660041EA5E /* blakecompiler */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = blakecompiler; sourceTree = BUILT_PRODUCTS_DIR; };
 		5D80678223EA89660041EA5E /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 		5D80678923EA89990041EA5E /* Lexer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = Lexer.c; sourceTree = "<group>"; };
@@ -47,6 +54,8 @@
 		5DC338EB24181A22009A31C8 /* Token.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = Token.c; sourceTree = "<group>"; };
 		5DC338ED24181B6A009A31C8 /* FileLexer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FileLexer.h; sourceTree = "<group>"; };
 		5DC338EE24181B6A009A31C8 /* FileLexer.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = FileLexer.c; sourceTree = "<group>"; };
+		5DC338F0241959C0009A31C8 /* GenerateASTDebug.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GenerateASTDebug.h; sourceTree = "<group>"; };
+		5DC338F1241959C0009A31C8 /* GenerateASTDebug.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = GenerateASTDebug.c; sourceTree = "<group>"; };
 		5DEB8B5023EC9DB50018CFF5 /* Keywords.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Keywords.h; sourceTree = "<group>"; };
 		5DEB8B5123EC9DB50018CFF5 /* Keywords.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = Keywords.c; sourceTree = "<group>"; };
 		5DEB8B5323EE387E0018CFF5 /* Parser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Parser.h; sourceTree = "<group>"; };
@@ -64,6 +73,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5D2BD56324198BEE0017EB3E /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				5DC338EA24181A22009A31C8 /* Token.h */,
+				5DC338EB24181A22009A31C8 /* Token.c */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
 		5D80677623EA89660041EA5E = {
 			isa = PBXGroup;
 			children = (
@@ -83,12 +101,13 @@
 		5D80678123EA89660041EA5E /* blakecompiler */ = {
 			isa = PBXGroup;
 			children = (
-				5D5989C623FC85E0007C402A /* Debug.c */,
 				5D5989BA23FA6AFA007C402A /* Debug.h */,
+				5D5989C623FC85E0007C402A /* Debug.c */,
+				5D80678223EA89660041EA5E /* main.c */,
 				5DC338E924180F78009A31C8 /* Generator */,
 				5DC338E424180D80009A31C8 /* Lexer */,
-				5D80678223EA89660041EA5E /* main.c */,
 				5DC338E824180F02009A31C8 /* Parser */,
+				5D2BD56324198BEE0017EB3E /* Shared */,
 				5DB2489323EB635800551FD7 /* Test Inputs */,
 			);
 			path = blakecompiler;
@@ -113,8 +132,6 @@
 				5D80678D23EA89990041EA5E /* Lexer.h */,
 				5DC338E624180DC9009A31C8 /* LexerMatchers.c */,
 				5DC338E524180DC9009A31C8 /* LexerMatchers.h */,
-				5DC338EA24181A22009A31C8 /* Token.h */,
-				5DC338EB24181A22009A31C8 /* Token.c */,
 				5DC338ED24181B6A009A31C8 /* FileLexer.h */,
 				5DC338EE24181B6A009A31C8 /* FileLexer.c */,
 			);
@@ -126,6 +143,8 @@
 			children = (
 				5DEB8B5423EE387E0018CFF5 /* Parser.c */,
 				5DEB8B5323EE387E0018CFF5 /* Parser.h */,
+				5D2BD56024195BF10017EB3E /* AST.h */,
+				5D2BD56124195BF10017EB3E /* AST.c */,
 			);
 			path = Parser;
 			sourceTree = "<group>";
@@ -133,8 +152,12 @@
 		5DC338E924180F78009A31C8 /* Generator */ = {
 			isa = PBXGroup;
 			children = (
-				5D638CD323F6156E009F6476 /* Generater.c */,
-				5D638CD223F6156E009F6476 /* Generater.h */,
+				5D638CD323F6156E009F6476 /* GenerateAssembly.c */,
+				5D638CD223F6156E009F6476 /* GenerateAssembly.h */,
+				5DC338F1241959C0009A31C8 /* GenerateASTDebug.c */,
+				5DC338F0241959C0009A31C8 /* GenerateASTDebug.h */,
+				5D2BD55E24195B000017EB3E /* Generator.c */,
+				5D2BD55D24195B000017EB3E /* Generator.h */,
 			);
 			path = Generator;
 			sourceTree = "<group>";
@@ -197,14 +220,17 @@
 			buildActionMask = 2147483647;
 			files = (
 				5D80678E23EA89990041EA5E /* Lexer.c in Sources */,
+				5DC338F2241959C0009A31C8 /* GenerateASTDebug.c in Sources */,
 				5DC338EC24181A22009A31C8 /* Token.c in Sources */,
 				5DEB8B5223EC9DB50018CFF5 /* Keywords.c in Sources */,
 				5DC338E724180DC9009A31C8 /* LexerMatchers.c in Sources */,
-				5D638CD423F6156E009F6476 /* Generater.c in Sources */,
+				5D638CD423F6156E009F6476 /* GenerateAssembly.c in Sources */,
+				5D2BD56224195BF10017EB3E /* AST.c in Sources */,
 				5D5989C723FC85E0007C402A /* Debug.c in Sources */,
 				5DC338EF24181B6A009A31C8 /* FileLexer.c in Sources */,
 				5DEB8B5523EE387E0018CFF5 /* Parser.c in Sources */,
 				5D80678323EA89660041EA5E /* main.c in Sources */,
+				5D2BD55F24195B000017EB3E /* Generator.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

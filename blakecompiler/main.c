@@ -9,7 +9,9 @@
 
 #include "FileLexer.h"
 #include "Parser.h"
-#include "Generater.h"
+#include "Generator.h"
+#include "GenerateASTDebug.h"
+#include "GenerateAssembly.h"
 #include "Debug.h"
 
 int main(int argc, char* argv[]) {
@@ -62,7 +64,10 @@ int main(int argc, char* argv[]) {
     strcpy(assembly_file_name, argv[1]);
     assembly_file_name[strlen(assembly_file_name) - 1] = 's';
     FILE *assembly_file = fopen(assembly_file_name, "w");
-    generate(program, assembly_file);
+    GeneratorConfig file_config = {.io_buffer = assembly_file};
+    GeneratorConfig stdout_config = {.io_buffer = stdout};
+    AssembleProgram(program, &file_config);
+    ASTDebugProgram(program, &stdout_config);
     fclose(assembly_file);
     
     debug("\n--Assembling--");
