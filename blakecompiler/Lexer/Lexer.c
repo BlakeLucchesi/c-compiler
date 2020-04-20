@@ -114,8 +114,15 @@ void Lex(Lexer *lexer) {
                 take_next(lexer);
             }
             lexer->buffer[lexer->index] = '\0';
-            token_class = is_keyword(lexer->buffer) || is_type(lexer->buffer) ? KEYWORD : IDENTIFIER;
-            token_name = KEYWORD_RETURN;
+            if (is_keyword(lexer->buffer) || is_type(lexer->buffer)) {
+                token_class = KEYWORD;
+                // TODO: add support for other keywords.
+                token_name = KEYWORD_RETURN;
+            }
+            else {
+                token_class = IDENTIFIER;
+                token_name = UNDEFINED_TOKEN_NAME;
+            }
         }
         if (token_class != UNDEFINED_TOKEN)
             emit_token(lexer, token_class, token_name);

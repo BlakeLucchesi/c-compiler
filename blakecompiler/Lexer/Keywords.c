@@ -4,7 +4,7 @@
 #include "Keywords.h"
 
 size_t is_keyword(char *input) {
-    int keyword_count = 3;
+    int keyword_count = 4;
     while (keyword_count > 0) {
         if (strcmp(input, KEYWORDS[keyword_count - 1]) == 0) {
             return KEYWORD_TOKEN[keyword_count - 1];

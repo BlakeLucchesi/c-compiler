@@ -44,7 +44,7 @@ ASTExpression *parse_expression(Token **start) {
 ASTStatement *parse_statement(Token **start) {
     ASTStatement *statement = (ASTStatement*)malloc(sizeof(ASTStatement));
     Token *current = *start;
-    if (current->klass != KEYWORD && current->name != KEYWORD_RETURN) {
+    if (!(current->klass == KEYWORD && current->name == KEYWORD_RETURN)) {
         ASTReportError(current, "Statement must begin with return keyword");
         return NULL;
     }
@@ -191,6 +191,6 @@ void ASTPrintError(ASTError *error) {
         debug("Failed parsing. %s. Token NULL.", error->message);
     }
     else {
-        debug("Failed parsing. %s. Found token %s on ln %d, col %d", error->message, error->token->value, error->token->line_number, error->token->col_number);
+        debug("Failed parsing. %s. Found token class: %d, value: %s on ln %d, col %d", error->message, error->token->klass, error->token->value, error->token->line_number, error->token->col_number);
     }
 }
