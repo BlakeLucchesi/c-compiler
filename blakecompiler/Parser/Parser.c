@@ -13,16 +13,17 @@ ASTExpression *parse_expression(Token **start) {
     ASTExpression *expression = (ASTExpression*)calloc(1, sizeof(ASTExpression));
     Token *current = *start;
     switch (current->klass) {
+        // Unary operation
         case OPERATOR: {
             switch (current->name) {
                 case OP_LOGICAL_NEGATION:
                 case OP_NEGATION:
                 case OP_BITWISE_COMPLEMENT: {
                     ASTUnaryOperator *uop = (ASTUnaryOperator *)malloc(sizeof(ASTUnaryOperator));
-                    uop->value = current->value;
-                    expression->unary_operator = uop;
+                    uop->op = current->value;
+                    expression->unary_op = uop;
                     *start = current->next;
-                    expression->expression = parse_expression(start);
+                    expression->unary_op->expression = parse_expression(start);
                     return expression;
                 }
                 default:
@@ -30,6 +31,7 @@ ASTExpression *parse_expression(Token **start) {
                     return NULL;
             }
         }
+        // Integer literal
         case LITERAL: {
             expression->value = current->value;
             *start = current->next;
@@ -59,7 +61,7 @@ ASTStatement *parse_statement(Token **start) {
     return NULL;
 }
 
-static int checkState(Token *current) {
+static int checkFunctionState(Token *current) {
     static int pos = 0;
     if (pos == 6)
         return 0;
@@ -94,7 +96,7 @@ ASTFunction *parse_function(Token **start) {
     fn->details.line = current->line_number;
     fn->details.start = current->col_number;
     while (current != NULL) {
-        if (!checkState(current))
+        if (!checkFunctionState(current))
             return NULL;
         switch (current->klass) {
             case SEPARATOR:

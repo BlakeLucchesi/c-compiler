@@ -6,6 +6,8 @@
 #include <stdio.h>
 #include "Token.h"
 
+struct _ast_expression;
+
 typedef struct _ast_details {
     int line;
     int start;
@@ -17,23 +19,24 @@ typedef struct _ast_identifier {
 } ASTIdentifier;
 
 typedef struct _ast_unary_operator {
-    char *value;
     ASTDetails details;
+    char *op;
+    struct _ast_expression *expression;
 } ASTUnaryOperator;
+
+typedef struct _ast_binary_operator {
+    ASTDetails details;
+    char *op;
+    struct _ast_expression *lhs;
+    struct _ast_expression *rhs;
+} ASTBinaryOperator;
 
 typedef struct _ast_expression {
     char *value;
-//    TokenName tokenName; // TODO switch on tokens not char values
-    ASTUnaryOperator *unary_operator;
-    struct _ast_expression *expression;
+    ASTUnaryOperator *unary_op;
+    ASTBinaryOperator *binary_op;
     ASTDetails details;
 } ASTExpression;
-
-typedef struct _ast_binary_operator {
-    char *value;
-    ASTExpression *expression_left;
-    ASTExpression *expression_right;
-} ASTBinaryOperator;
 
 typedef struct _ast_return {
     ASTExpression *expression;

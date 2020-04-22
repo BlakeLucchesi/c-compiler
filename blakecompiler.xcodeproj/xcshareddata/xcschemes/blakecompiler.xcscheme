@@ -52,7 +52,7 @@
       </BuildableProductRunnable>
       <CommandLineArguments>
          <CommandLineArgument
-            argument = "&quot;/Users/blakelucchesi/code/bcc-tests/stage_1/valid/newlines.c&quot;"
+            argument = "&quot;/Users/blakelucchesi/code/bcc-tests/stage_3/valid/add.c&quot;"
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument

@@ -24,20 +24,23 @@ void AssembleExpression(ASTExpression *expression, GeneratorConfig *config) {
         fprintf(config->io_buffer, " movl $%s, %%eax\n", expression->value);
     }
     else {
-        if (*(expression->unary_operator->value) == '-') {
-            AssembleExpression(expression->expression, config);
-            fprintf(config->io_buffer, " neg %%eax\n");
-        }
-        else if (*(expression->unary_operator->value) == '!') {
-            AssembleExpression(expression->expression, config);
-            fprintf(config->io_buffer, " cmpl $0, %%eax\n");
-            fprintf(config->io_buffer, " movl $0, %%eax\n");
-            fprintf(config->io_buffer, " sete %%al\n");
-        }
-        else if (*(expression->unary_operator->value) == '~') {
-            AssembleExpression(expression->expression, config);
-            fprintf(config->io_buffer, " add $1, %%eax\n");
-            fprintf(config->io_buffer, " neg %%eax\n");
+        if (expression->unary_op != NULL) {
+            ASTUnaryOperator *current = expression->unary_op;
+            if (*(current->op) == '-') {
+                AssembleExpression(current->expression, config);
+                fprintf(config->io_buffer, " neg %%eax\n");
+            }
+            else if (*(current->op) == '!') {
+                AssembleExpression(current->expression, config);
+                fprintf(config->io_buffer, " cmpl $0, %%eax\n");
+                fprintf(config->io_buffer, " movl $0, %%eax\n");
+                fprintf(config->io_buffer, " sete %%al\n");
+            }
+            else if (*(current->op) == '~') {
+                AssembleExpression(current->expression, config);
+                fprintf(config->io_buffer, " add $1, %%eax\n");
+                fprintf(config->io_buffer, " neg %%eax\n");
+            }
         }
     }
 }

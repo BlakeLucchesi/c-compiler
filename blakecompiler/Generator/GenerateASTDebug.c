@@ -35,23 +35,26 @@ void ASTDebugExpression(ASTExpression *expression, GeneratorConfig *config) {
     }
     else {
         // TODO: Switch on token names not char values.
-        if (*(expression->unary_operator->value) == '-') {
-            print(config->indent, config->io_buffer, "UnaryOperator -");
-            config->indent++;
-            ASTDebugExpression(expression->expression, config);
-            config->indent--;
-        }
-        else if (*(expression->unary_operator->value) == '!') {
-            config->indent++;
-            ASTDebugExpression(expression->expression, config);
-            config->indent--;
-            print(config->indent, config->io_buffer, "UnaryOperator !");
-        }
-        else if (*(expression->unary_operator->value) == '~') {
-            print(config->indent, config->io_buffer, "UnaryOperator ~");
-            config->indent++;
-            ASTDebugExpression(expression->expression, config);
-            config->indent--;
+        if (expression->unary_op != NULL) {
+            ASTUnaryOperator *current = expression->unary_op;
+            if (*(current->op) == '-') {
+                print(config->indent, config->io_buffer, "UnaryOperator -");
+                config->indent++;
+                ASTDebugExpression(current->expression, config);
+                config->indent--;
+            }
+            else if (*(current->op) == '!') {
+                print(config->indent, config->io_buffer, "UnaryOperator !");
+                config->indent++;
+                ASTDebugExpression(current->expression, config);
+                config->indent--;
+            }
+            else if (*(current->op) == '~') {
+                print(config->indent, config->io_buffer, "UnaryOperator ~");
+                config->indent++;
+                ASTDebugExpression(current->expression, config);
+                config->indent--;
+            }
         }
     }
 }
