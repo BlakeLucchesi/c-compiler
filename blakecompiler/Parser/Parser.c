@@ -2,6 +2,7 @@
 
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 
 #include "Parser.h"
 #include "Debug.h"
@@ -9,38 +10,78 @@
 void ASTReportError(Token *token, char *message);
 static ASTError *_ASTErrors;
 
-ASTExpression *parse_expression(Token **start) {
-    ASTExpression *expression = (ASTExpression*)calloc(1, sizeof(ASTExpression));
+ASTExpression *parse_expression(Token **start);
+
+bool is_unary_operator(Token *token) {
+    return token->klass == OPERATOR && (token->name == OP_NEGATION || token->name == OP_LOGICAL_NEGATION || token->name == OP_BITWISE_COMPLEMENT);
+}
+
+void next_token(Token **start) {
+    *start = (*start)->next;
+}
+
+Token *peek_token(Token *current) {
+    return current->next;
+}
+
+ASTExpression *parse_factor(Token **start) {
     Token *current = *start;
-    switch (current->klass) {
-        // Unary operation
-        case OPERATOR: {
-            switch (current->name) {
-                case OP_LOGICAL_NEGATION:
-                case OP_NEGATION:
-                case OP_BITWISE_COMPLEMENT: {
-                    ASTUnaryOperator *uop = (ASTUnaryOperator *)malloc(sizeof(ASTUnaryOperator));
-                    uop->op = current->value;
-                    expression->unary_op = uop;
-                    *start = current->next;
-                    expression->unary_op->expression = parse_expression(start);
-                    return expression;
-                }
-                default:
-                    ASTReportError(current, "Unsupported operator");
-                    return NULL;
-            }
-        }
-        // Integer literal
-        case LITERAL: {
-            expression->value = current->value;
-            *start = current->next;
-            return expression;
-        }
-        default:
-            ASTReportError(current, "Expression expecting either an operator or literal");
-            return NULL;
+    if (current->klass == LITERAL) {
+        ASTExpression *exp = (ASTExpression *)calloc(1, sizeof(ASTExpression));
+        exp->value = current->value;
+        next_token(start);
+        return exp;
     }
+    else if (is_unary_operator(current)) {
+        ASTExpression *exp = (ASTExpression *)calloc(1, sizeof(ASTExpression));
+        ASTUnaryOperator *op = (ASTUnaryOperator *)calloc(1, sizeof(ASTUnaryOperator));
+        op->op = current->value;
+        next_token(start);
+        op->expression = parse_factor(start);
+        exp->unary_op = op;
+        return exp;
+    }
+    else if (current->klass == SEPARATOR) {
+        if (current->name == SEP_PAREN_OPEN) {
+            next_token(start);
+            ASTExpression *exp = parse_expression(start);
+            current = *start;
+            if (current->name == SEP_PAREN_CLOSE) {
+                next_token(start);
+            }
+            else {
+                ASTReportError(current, "Missing matching close parenthesis");
+            }
+            return exp;
+        }
+        else {
+            ASTReportError(current, "Invalid separator token in term");
+        }
+    }
+    ASTReportError(current, "Could not parse factor");
+    return NULL;
+}
+
+ASTExpression *parse_term(Token **start) {
+    ASTExpression *exp = parse_factor(start);
+    Token *current = *start;
+    while (current->klass == OPERATOR && (current->name == OP_MULTIPLICATION || current->name == OP_DIVISOR)) {
+        next_token(start);
+        ASTExpression *next_exp = (ASTExpression *)calloc(1, sizeof(ASTExpression));
+        next_exp->binary_op = (ASTBinaryOperator *)calloc(1, sizeof(ASTBinaryOperator));
+        next_exp->binary_op->op = current->value;
+        next_exp->binary_op->lhs = exp;
+        next_exp->binary_op->rhs = parse_factor(start);
+        exp = next_exp;
+        current = peek_token(*start);
+    }
+    return exp;
+}
+
+ASTExpression *parse_expression(Token **start) {
+//    ASTExpression *expression = (ASTExpression*)calloc(1, sizeof(ASTExpression));
+    ASTExpression *expression = parse_term(start);
+    return expression;
 }
 
 ASTStatement *parse_statement(Token **start) {

@@ -33,28 +33,33 @@ void ASTDebugExpression(ASTExpression *expression, GeneratorConfig *config) {
     if (expression->value) {
         print(config->indent, config->io_buffer, "Literal %s", expression->value);
     }
-    else {
-        // TODO: Switch on token names not char values.
-        if (expression->unary_op != NULL) {
-            ASTUnaryOperator *current = expression->unary_op;
-            if (*(current->op) == '-') {
-                print(config->indent, config->io_buffer, "UnaryOperator -");
-                config->indent++;
-                ASTDebugExpression(current->expression, config);
-                config->indent--;
-            }
-            else if (*(current->op) == '!') {
-                print(config->indent, config->io_buffer, "UnaryOperator !");
-                config->indent++;
-                ASTDebugExpression(current->expression, config);
-                config->indent--;
-            }
-            else if (*(current->op) == '~') {
-                print(config->indent, config->io_buffer, "UnaryOperator ~");
-                config->indent++;
-                ASTDebugExpression(current->expression, config);
-                config->indent--;
-            }
+    else if (expression->unary_op != NULL) {
+        ASTUnaryOperator *current = expression->unary_op;
+        if (*(current->op) == '-') {
+            print(config->indent, config->io_buffer, "UnaryOperator -");
+            config->indent++;
+            ASTDebugExpression(current->expression, config);
+            config->indent--;
         }
+        else if (*(current->op) == '!') {
+            print(config->indent, config->io_buffer, "UnaryOperator !");
+            config->indent++;
+            ASTDebugExpression(current->expression, config);
+            config->indent--;
+        }
+        else if (*(current->op) == '~') {
+            print(config->indent, config->io_buffer, "UnaryOperator ~");
+            config->indent++;
+            ASTDebugExpression(current->expression, config);
+            config->indent--;
+        }
+    }
+    else if (expression->binary_op != NULL) {
+        ASTBinaryOperator *current = expression->binary_op;
+        print(config->indent, config->io_buffer, "%s ", current->op);
+        config->indent++;
+        ASTDebugExpression(current->lhs, config);
+        ASTDebugExpression(current->rhs, config);
+        config->indent--;
     }
 }
