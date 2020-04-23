@@ -79,9 +79,19 @@ ASTExpression *parse_term(Token **start) {
 }
 
 ASTExpression *parse_expression(Token **start) {
-//    ASTExpression *expression = (ASTExpression*)calloc(1, sizeof(ASTExpression));
-    ASTExpression *expression = parse_term(start);
-    return expression;
+    ASTExpression *exp = parse_term(start);
+    Token *current = *start;
+    while (current->klass == OPERATOR && (current->name == OP_ADDITION || current->name == OP_NEGATION)) {
+        next_token(start);
+        ASTExpression *next_exp = (ASTExpression *)calloc(1, sizeof(ASTExpression));
+        next_exp->binary_op = (ASTBinaryOperator *)calloc(1, sizeof(ASTBinaryOperator));
+        next_exp->binary_op->op = current->value;
+        next_exp->binary_op->lhs = exp;
+        next_exp->binary_op->rhs = parse_term(start);
+        exp = next_exp;
+        current = peek_token(*start);
+    }
+    return exp;
 }
 
 ASTStatement *parse_statement(Token **start) {

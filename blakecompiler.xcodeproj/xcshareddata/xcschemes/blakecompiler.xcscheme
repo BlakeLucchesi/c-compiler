@@ -52,7 +52,7 @@
       </BuildableProductRunnable>
       <CommandLineArguments>
          <CommandLineArgument
-            argument = "&quot;/Users/blakelucchesi/code/bcc-tests/stage_3/valid/parens.c&quot;"
+            argument = "&quot;/Users/blakelucchesi/code/bcc-tests/stage_3/valid/precedence.c&quot;"
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
