@@ -9,6 +9,7 @@
 
 void ASTDebugProgram(ASTProgram *program, GeneratorConfig *config) {
     config->indent = 1;
+    fprintf(config->io_buffer, "\n"); // start w/ new line to clear any previous output.
     print(config->indent, config->io_buffer, "Program");
     config->indent++;
     ASTDebugFunction(program->function, config);

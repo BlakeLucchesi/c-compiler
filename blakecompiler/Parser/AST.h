@@ -32,10 +32,10 @@ typedef struct _ast_binary_operator {
 } ASTBinaryOperator;
 
 typedef struct _ast_expression {
+    ASTDetails details;
     char *value;
     ASTUnaryOperator *unary_op;
     ASTBinaryOperator *binary_op;
-    ASTDetails details;
 } ASTExpression;
 
 typedef struct _ast_return {
