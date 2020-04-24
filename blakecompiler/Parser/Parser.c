@@ -73,7 +73,7 @@ ASTExpression *parse_term(Token **start) {
         next_exp->binary_op->lhs = exp;
         next_exp->binary_op->rhs = parse_factor(start);
         exp = next_exp;
-        current = peek_token(*start);
+        current = *start;
     }
     return exp;
 }
@@ -89,7 +89,7 @@ ASTExpression *parse_expression(Token **start) {
         next_exp->binary_op->lhs = exp;
         next_exp->binary_op->rhs = parse_term(start);
         exp = next_exp;
-        current = peek_token(*start);
+        current = *start;
     }
     return exp;
 }

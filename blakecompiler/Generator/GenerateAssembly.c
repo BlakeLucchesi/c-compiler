@@ -66,9 +66,10 @@ void AssembleExpression(ASTExpression *expression, GeneratorConfig *config) {
         }
         else if (*(current->op) == '/') {
             AssembleExpression(current->rhs, config);
-            fprintf(config->io_buffer, " mov %%rax, %%rcx\n");
+            fprintf(config->io_buffer, " push %%rax\n");
             AssembleExpression(current->lhs, config);
             fprintf(config->io_buffer, " cqto\n");
+            fprintf(config->io_buffer, " pop %%rcx\n");
             fprintf(config->io_buffer, " idivq %%rcx\n");
         }
     }
