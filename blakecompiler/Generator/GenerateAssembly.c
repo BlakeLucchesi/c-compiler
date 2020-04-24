@@ -51,7 +51,11 @@ void AssembleExpression(ASTExpression *expression, GeneratorConfig *config) {
             fprintf(config->io_buffer, " add %%rcx, %%rax\n");
         }
         else if (*(current->op) == '-') {
-            
+            AssembleExpression(current->rhs, config);
+            fprintf(config->io_buffer, " push %%rax\n");
+            AssembleExpression(current->lhs, config);
+            fprintf(config->io_buffer, " pop %%rcx\n");
+            fprintf(config->io_buffer, " sub %%rcx, %%rax\n");
         }
         else if (*(current->op) == '*') {
             AssembleExpression(current->lhs, config);
@@ -61,7 +65,11 @@ void AssembleExpression(ASTExpression *expression, GeneratorConfig *config) {
             fprintf(config->io_buffer, " imul %%rcx, %%rax\n");
         }
         else if (*(current->op) == '/') {
-            
+            AssembleExpression(current->rhs, config);
+            fprintf(config->io_buffer, " mov %%rax, %%rcx\n");
+            AssembleExpression(current->lhs, config);
+            fprintf(config->io_buffer, " cqto\n");
+            fprintf(config->io_buffer, " idivq %%rcx\n");
         }
     }
 }
